@@ -47,15 +47,15 @@
     <nav>
     <div>
         <button class="toggle-vis" data-column="0">Id</button>
-        <button class="toggle-vis" data-column="0">Nombre</button>
-        <button class="toggle-vis" data-column="1">Torre</button>
-        <button class="toggle-vis" data-column="2">Computadores</button>
-        <button class="toggle-vis" data-column="3">Tvs</button>
-        <button class="toggle-vis" data-column="4">Sillas</button>
-        <button class="toggle-vis" data-column="5">Mesas</button>
-        <button class="toggle-vis" data-column="6">Tableros</button>
-        <button class="toggle-vis" data-column="7">Niñeras</button>
-        <button class="toggle-vis" data-column="8">Accion</button>
+        <button class="toggle-vis" data-column="1">Nombre</button>
+        <button class="toggle-vis" data-column="2">Torre</button>
+        <button class="toggle-vis" data-column="3">Computadores</button>
+        <button class="toggle-vis" data-column="4">Tvs</button>
+        <button class="toggle-vis" data-column="5">Sillas</button>
+        <button class="toggle-vis" data-column="6">Mesas</button>
+        <button class="toggle-vis" data-column="7">Tableros</button>
+        <button class="toggle-vis" data-column="8">Niñeras</button>
+        <button class="toggle-vis" data-column="9">Accion</button>
     </div>
     </nav>
     <section class="ambiente" id="section-ambiente">
@@ -145,7 +145,7 @@
             <a href="<?php echo $url_regresar; ?>"class="button boton-centrado" id="btn-regresar">Regresar</a>
         </div>
         <div class="salir">
-            <button id="btn_salir">Salir</button>
+            <a href="/gestiondeambientes/login" id="btn_salir" class="button-admin">Salir</a>
         </div>
     </section>
     <script>
