@@ -1,5 +1,12 @@
 /* Estilos para el menú desplegable */
 /* Estilos para las opciones del menú */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki:wght@400..700&display=swap');
+
+*{
+    font-family: "Noto Serif Khojki", serif;
+}
+
 .menu-options {
     display: none;
     position: absolute;
@@ -14,7 +21,6 @@
     top: calc(25% + 10px); /* Colocar el menú casi debajo de la campana de notificaciones */
 }
 
-
 .menu-options li {
     padding: 10px 20px; /* Espaciado de las opciones */
 }
@@ -26,6 +32,7 @@
     color: #333;
     padding: 10px 20px; /* Ajusta el espaciado vertical y horizontal */
 }
+
 /* Mostrar las opciones del menú cuando el menú se despliega */
 .menu-container.active .menu-options {
     display: block;
@@ -49,80 +56,85 @@ body {
     font-family: Arial, sans-serif; /* Cambiar la fuente según necesites */
 }
 
+main{
+    margin-bottom: 50px;
+    padding: 2px;
+}
+
 /* Estilo del header */
-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between; /* Alinea los elementos al extremo izquierdo y derecho */
-    margin-bottom: 20px; /* Ajusta según sea necesario */
-}
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between; /* Alinea los elementos al extremo izquierdo y derecho */
+        margin-bottom: 20px; /* Ajusta según sea necesario */
+    }
 
-header h1 {
-    margin-bottom: 10px;
-}
+    header h1 {
+        margin-bottom: 10px;
+    }
 
-/* Estilo del logo */
-.logo-container {
-    display: flex;
-    align-items: center;
-    margin-right: 10px; /* Espacio entre el logo y el título */
-}
+    /* Estilo del logo */
+    .logo-container {
+        display: flex;
+        align-items: center;
+        margin-right: 10px; /* Espacio entre el logo y el título */
+    }
 
-.logo {
-    width: 50px; /* Tamaño del logo */
-    height: auto; /* Ajusta automáticamente la altura según el ancho */
-}
+    .logo {
+        width: 50px; /* Tamaño del logo */
+        height: auto; /* Ajusta automáticamente la altura según el ancho */
+    }
 
-/* Estilo para el nav */
-nav {
-    background-color: #f4f4f4;
-    padding: 10px 0;
-    text-align: center;
-    margin-bottom: 20px;
-    width: calc(100% - 40px); /* Ajusta el ancho del nav */
-    max-width: 1200px; /* Establece un ancho máximo */
-    margin-left: auto; /* Centra el nav */
-    margin-right: auto; /* Centra el nav */
-}
+    /* Estilo para el nav */
+    nav {
+        background-color: #f4f4f4;
+        padding: 10px 0;
+        text-align: center;
+        margin-bottom: 20px;
+        width: calc(100% - 40px); /* Ajusta el ancho del nav */
+        max-width: 1200px; /* Establece un ancho máximo */
+        margin-left: auto; /* Centra el nav */
+        margin-right: auto; /* Centra el nav */
+    }
 
-nav .filtro {
-    margin-right: 20px; /* Espacio entre el filtro y el botón */
-}
+    nav .filtro {
+        margin-right: 20px; /* Espacio entre el filtro y el botón */
+    }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
+    nav ul {
+        list-style-type: none;
+        padding: 0;
+    }
 
-nav ul li {
-    display: inline-block;
-    margin-right: 20px;
-}
+    nav ul li {
+        display: inline-block;
+        margin-right: 20px;
+    }
 
-nav ul li:last-child {
-    margin-right: 0;
-}
+    nav ul li:last-child {
+        margin-right: 0;
+    }
 
-nav ul li a {
-    text-decoration: none;
-    color: #333;
-}
+    nav ul li a {
+        text-decoration: none;
+        color: #333;
+    }
 
-.datetime {
-    display: flex; /* Utiliza flexbox para alinear los elementos horizontalmente */
-    justify-content: space-between; /* Distribuye los elementos a lo largo del contenedor */
-    margin-bottom: 0px; /* Ajusta según sea necesario */
-}
+    .datetime {
+        display: flex; /* Utiliza flexbox para alinear los elementos horizontalmente */
+        justify-content: space-between; /* Distribuye los elementos a lo largo del contenedor */
+        margin-bottom: 0px; /* Ajusta según sea necesario */
+    }
 
-.datetime .fecha {
-    margin-right: 10px; /* Añade un margen entre la fecha y la hora */
-}
+    .datetime .fecha {
+        margin-right: 10px; /* Añade un margen entre la fecha y la hora */
+    }
 
-/* Estilos para el elemento de hora */
-.datetime .hora {
-    margin-left: 10px; /* Añade un margen entre la fecha y la hora */
-}
+    /* Estilos para el elemento de hora */
+    .datetime .hora {
+        margin-left: 10px; /* Añade un margen entre la fecha y la hora */
+    }
 
 /* Estilo de la sección de fecha y hora */
 
@@ -158,10 +170,11 @@ footer .button {
 /* Cambio de estilo al pasar el ratón sobre el botón dentro del footer */
 footer .button:hover {
     background-color: #45a049; /* Un tono más oscuro de verde */
+    padding: 10px;
+    margin: 20px;
 }
 
 /*section del index del home administrativo*/
-
 .admin {
     background-color: #f2f2f2;
     padding: 20px;
@@ -200,6 +213,7 @@ footer .button:hover {
     background-color: #0d6c12;
     transition: 0.6s;
 }
+
 /* Estilos personalizados para el botón de confirmación en SweetAlert2 */
 .custom-btn-class {
     background-color: #4CAF50; /* Color de fondo */
@@ -233,7 +247,7 @@ footer .button:hover {
 }
 
 /* Estilo para la descripción de la sección Ambiente */
-.descripcion-ambiente {
+.descripcion-ambiente{
     text-align: center;
     margin-bottom: 20px;
 }
@@ -243,6 +257,7 @@ footer .button:hover {
     max-height: 400px;
     overflow-y: auto;
     margin-bottom: 80px; /* Ajusta el margen inferior para que la tabla se eleve más */
+
 }
 
 .tabla-ambientes table {
@@ -250,16 +265,64 @@ footer .button:hover {
     border-collapse: collapse; /* Combina los bordes de las celdas */
 }
 
-.tabla-ambientes th,
-.tabla-ambientes td {
+#tabla-ambientes th,
+#tabla-ambientes td {
     padding: 8px; /* Espaciado interno de las celdas */
-    border: 1px solid #ddd; /* Borde de las celdas */
+    border: 1px solid #ddd !important; /* Borde de las celdas */
     text-align: left; /* Alineación del texto */
 }
 
 .tabla-ambientes th {
     background-color: #4CAF50; /* Color de fondo del encabezado de la tabla */
     color: white; /* Color del texto del encabezado */
+}
+
+.indicadores{
+    background-color: #0d6c12;
+}
+
+.aspects{
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.aspects .indicators{
+    border-radius: 5px;
+}
+
+.aspects .indicators:hover{
+    transform: scale(+120%);
+    background-color: #0d6c12;
+    transition: 0.5s ease;
+    margin: 20px;
+    padding: 10px 20px 10px 20px;
+}
+
+.aspects .indicators::after{
+    transform: scale(+120%);
+    background-color: #0d6c12;
+    transition: 0.5s ease;
+    margin: 20px;
+    padding: 10px 20px 10px 20px;
+}
+
+#tabla-ambientes td {
+    white-space: nowrap;  /* Evita que el contenido se divida en varias líneas */
+    overflow: hidden;      /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Agrega "..." si el contenido es muy grande */
+}
+
+#tabla-ambientes td:last-child {
+    text-align: center; /* Asegura que los iconos estén centrados */
+    width: 100px; /* Ajusta según el tamaño que necesites */
+}
+
+.container.ambiNav{
+    margin-top: 20px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
 
 .tabla-ambientes tr:nth-child(even) {
@@ -276,9 +339,9 @@ footer .button:hover {
 .boton-habilitar,
 .boton-inhabilitar,
 .boton-centrado {
-    background-color: #66BB6A;
-    color: white;
-    padding: 10px 20px;
+    background-color: transparent;
+    color: white !important;
+    padding: 8px 10px;
     border: none;
     border-radius: 5px;
     text-decoration: none;
@@ -290,6 +353,8 @@ footer .button:hover {
 .boton-inhabilitar:hover,
 .boton-centrado:hover {
     background-color: #45a049;
+    transition: 0.3s ease;
+    padding: 5px;
 }
 
 /*botonse que son generales para la web*/
@@ -427,6 +492,7 @@ button{
 #btn-create:hover {
     background-color: #45a049; /* Color de fondo al pasar el ratón */
 }
+
 /*Estilos para el actualizar ambiente*/
 .update-ambiente {
     background-color: #f2f2f2;
@@ -487,6 +553,7 @@ button{
 #btn-update:hover {
     background-color: #45a049; /* Color de fondo al pasar el ratón */
 }
+
 .notification-bell {
     position: relative;
     margin-left: 700px;
@@ -553,3 +620,4 @@ button{
     padding: 3px 6px;
     font-size: 12px;
 }
+

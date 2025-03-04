@@ -39,9 +39,10 @@ if (isset($_SESSION['clave'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki:wght@400..700&display=swap');
         /* Estilos Generales */
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Noto Serif Khojki", serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;

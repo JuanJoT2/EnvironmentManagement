@@ -43,16 +43,18 @@
         </div>
     </div>
 </header>
-<nav>
-    <div class="column-toggle-buttons">
-        <button class="toggle-vis" data-column="0">ID</button>
-        <button class="toggle-vis" data-column="1">Nombres</button>
-        <button class="toggle-vis" data-column="2">Apellidos</button>
-        <button class="toggle-vis" data-column="3">Correo</button>
-        <button class="toggle-vis" data-column="4">Rol</button>
-        <button class="toggle-vis" data-column="5">Acciones</button>
-    </div>
-</nav>  
+
+<nav class ="container aspects">
+        <div class="container">
+            <button class="toggle-vis indicators" data-column="0">ID</button>
+            <button class="toggle-vis indicators" data-column="1">Nombres</button>
+            <button class="toggle-vis indicators" data-column="2">Apellidos</button>
+            <button class="toggle-vis indicators" data-column="3">Correos</button>
+            <button class="toggle-vis indicators" data-column="4">Rol</button>
+            <button class="toggle-vis indicators" data-column="5">Acciones</button>
+        </div>
+</nav>
+
 <section class="ambiente" id="section-ambiente">
     <div class="subtitulo-ambiente">
         <h2>Usuarios</h2>
@@ -62,7 +64,7 @@
     </div>
     <div class="tabla-ambientes tabla-scroll">
         <table class="table table-striped table-dark table_id" border="1" id="tabla-ambientes">
-            <thead>
+            <thead class="aspects">
                 <tr>
                     <th>ID</th>
                     <th>Nombres</th>
@@ -111,17 +113,24 @@
                 </ul>
             </div>
         </div>
+</section>
+
+    <footer class="text-center p-3 bg-dark text-white mt-4">
+
         <div class="regresar">
             <?php
             $url_regresar = '../admin/home';
             ?>
             <a href="<?php echo $url_regresar; ?>" class="button boton-centrado" id="btn-regresar">Regresar</a>
         </div>
+
         <div class="salir">
-            <button id="btn_salir">Salir</button>
+            <a href="/gestiondeambientes/login" id="btn_salir" class="button-admin">Salir</a>
         </div>
-    </div>
-</section>
+
+        <p>© 2025 Gestión de Ambientes de Formación - Todos los derechos reservados.</p>
+    </footer>
+
 <script>
     $(document).ready(function() {
         var table = $('#tabla-ambientes').DataTable({
@@ -155,8 +164,5 @@
     }
 </script>
 
-<footer>
-    <p>Sena todos los derechos reservados</p>
-</footer>
 </body>
 </html>

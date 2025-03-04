@@ -32,7 +32,8 @@
             flex-grow: 1;
         }
         .subtitle{
-            font-size: 40px;
+            font-size: 25px;
+            padding: 5px;
         }
         .columns {
             display: flex;

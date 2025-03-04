@@ -45,75 +45,90 @@ $db = Database::connect();
             </div>
         </div>
     </header>
-    <nav>
-    <div class="column-toggle-buttons">
+
+    <nav class ="container aspects">
+        <div class="container">
+            <button class="toggle-vis indicators" data-column="0">Instructor</button>
+            <button class="toggle-vis indicators" data-column="1">Ambiente</button>
+            <button class="toggle-vis indicators" data-column="2">Observaciones</button>
+            <button class="toggle-vis indicators" data-column="3">Fecha y hora</button>
+        </div>
+    </nav>
+
+    <!-- <nav>
+        <div class="column-toggle-buttons">
             <button class="toggle-vis" data-column="0">Instructor</button>
             <button class="toggle-vis" data-column="1">Ambiente</button>
             <button class="toggle-vis" data-column="2">Observaciones</button>
             <button class="toggle-vis" data-column="3">Fecha y Hora</button>
         </div>
-    </nav>
-    <section class="ambiente" id="section-ambiente">
-        <div class="subtitulo-ambiente">
-            <h2>Reportes</h2>
-        </div>
-        <div class="descripcion-ambiente">
-            <p>Reportes por Instructor de cada Ambiente</p>
-        </div>
-        <div class="tabla-ambientes tabla-scroll">
-            <table class="table table-striped table-dark table_id" border="1" id="tabla-ambientes">
-                <thead>
-                    <tr>
-                        <th>Instructor</th>
-                        <th>Ambiente</th>
-                        <th>Observaciones</th>
-                        <th>Fecha y Hora</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-                // Consulta SQL para seleccionar todos los registros de la tabla t_reportes
-                $query = "SELECT r.Id_reporte, r.Observaciones, r.FechaHora, CONCAT(u.Nombres, ' ', u.Apellidos) AS NombreCompleto, a.Nombre AS ambiente
-                        FROM t_reportes AS r
-                        INNER JOIN t_usuarios AS u ON r.Id_usuario = u.Id_usuario
-                        INNER JOIN t_ambientes AS a ON r.Id_ambiente = a.Id_ambiente";
-                        
-                $result = $db->query($query);
+    </nav> -->
 
-                if ($result->num_rows > 0) {
-                    // Iterar sobre los resultados y mostrar cada registro en una fila de la tabla HTML
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row['NombreCompleto'] . "</td>";
-                        echo "<td>" . $row['ambiente'] . "</td>";
-                        echo "<td>" . $row['Observaciones'] . "</td>";
-                        echo "<td>" . $row['FechaHora'] . "</td>";
-                        echo "</tr>";
+    <main>
+        <section class="ambiente" id="section-ambiente">
+            <div class="subtitulo-ambiente">
+                <h2>Reportes</h2>
+            </div>
+            <div class="descripcion-ambiente">
+                <p>Reportes por Instructor de cada Ambiente</p>
+            </div>
+            <div class="tabla-ambientes tabla-scroll">
+                <table class="table table-striped table-dark table_id" border="1" id="tabla-ambientes">
+                    <thead class="aspects">
+                        <tr>
+                            <th>Instructor</th>
+                            <th>Ambiente</th>
+                            <th>Observaciones</th>
+                            <th>Fecha y Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    // Consulta SQL para seleccionar todos los registros de la tabla t_reportes
+                    $query = "SELECT r.Id_reporte, r.Observaciones, r.FechaHora, CONCAT(u.Nombres, ' ', u.Apellidos) AS NombreCompleto, a.Nombre AS ambiente
+                            FROM t_reportes AS r
+                            INNER JOIN t_usuarios AS u ON r.Id_usuario = u.Id_usuario
+                            INNER JOIN t_ambientes AS a ON r.Id_ambiente = a.Id_ambiente";
+                            
+                    $result = $db->query($query);
+
+                    if ($result->num_rows > 0) {
+                        // Iterar sobre los resultados y mostrar cada registro en una fila de la tabla HTML
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . $row['NombreCompleto'] . "</td>";
+                            echo "<td>" . $row['ambiente'] . "</td>";
+                            echo "<td>" . $row['Observaciones'] . "</td>";
+                            echo "<td>" . $row['FechaHora'] . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        // Si no hay filas en el resultado, mostrar un mensaje de que no hay registros
+                        echo "<tr><td colspan='4'>No hay registros</td></tr>";
                     }
-                } else {
-                    // Si no hay filas en el resultado, mostrar un mensaje de que no hay registros
-                    echo "<tr><td colspan='4'>No hay registros</td></tr>";
-                }
 
-                // Cerrar la conexión a la base de datos
-                $db->close();
-                ?>
-                </tbody>
-            </table>
-        </div>
+                    // Cerrar la conexión a la base de datos
+                    $db->close();
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="text-center p-3 bg-dark text-white mt-4">   
         <div class="regresar">
             <?php
                 $url_regresar = 'home';
             ?>
             <a href="<?php echo $url_regresar; ?>" class="button boton-centrado" id="btn-regresar">Regresar</a>
-        </div>
+       </div>
         <div class="salir">
             <button id="btn_salir">Salir</button>
         </div>
-    </section>
-    <footer>
-        <p>Sena todos los derechos reservados</p>
+        <p>© 2025 Gestión de Ambientes de Formación - Todos los derechos reservados.</p>
     </footer>
+
     <script>
         $(document).ready(function() {
             var table = $('#tabla-ambientes').DataTable({
