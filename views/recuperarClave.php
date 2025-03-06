@@ -232,7 +232,7 @@
                 <button type="submit" class="btn" id="enviar">Enviar</button>
             </form>
             <div class="footer">
-                <a href="/gestiondeambientes/login" class="d-block mt-3 text-success return">Volver al inicio de sesión</a>
+                <a href="./index.php" class="d-block mt-3 text-success return">Volver al inicio de sesión</a>
             </div>
         </div>
     </div>

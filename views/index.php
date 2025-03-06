@@ -96,7 +96,7 @@
 
 
     <div class="login-container">
-        <img src="assets/Logo-Sena.jpg" alt="logo">
+        <img src="../assets/Logo-Sena.jpg" alt="logo">
         <h4>Bienvenido al Sistema de Gestión y Control de Ambientes de Formación CDM</h4>
         <br>
         <p>Ingrese su correo y clave para acceder</p>
@@ -107,7 +107,8 @@
             <button type="submit" class="btn btn-primary w-100">Ingresar</button>
         </form>
         
-        <a href="/gestiondeambientes/recuperar/mostrarFormulario" class="d-block mt-3 text-success">Recuperar contraseña</a>
+        <a href="./recuperarClave.php"  class="d-block mt-3 text-success">Recuperar contraseña</a>
+        <a href="../index.php" class="d-block mt-3 text-success"> volver </a>
 
 
         <!-- <button class="btn btn-link mt-2" onclick="showPopup()">Créditos</button> -->
