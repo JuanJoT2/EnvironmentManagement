@@ -5,8 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña</title>
     <link rel="stylesheet" href="public/css/login.css">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+    crossorigin="anonymous">
+
     <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki:wght@400..700&display=swap');
+
+        *{
+            font-family: "Noto Serif Khojki", serif;
+        }
+
         body, html {
+            
             margin: 0;
             padding: 0;
             width: 100%;
@@ -92,14 +106,18 @@
         }
 
         .footer a {
-            color: #28a745; /* Verde */
+            color: #28a745;
             text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
+            font-size: 16px;
+            transition: color 0.3sease;
+            font-weight: 500;
+            text-decoration: underline;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        #enviar:hover{
+            background:#077e21;
+            color: #fff;
+            transition: 0.4s ease;
         }
 
         .popup {
@@ -197,6 +215,7 @@
             }
         }
     </style>
+
 </head>
 <body>
     <div class="container">
@@ -213,7 +232,7 @@
                 <button type="submit" class="btn" id="enviar">Enviar</button>
             </form>
             <div class="footer">
-                <a href="/gestiondeambientes/login">Volver al inicio de sesión</a>
+                <a href="/gestiondeambientes/login" class="d-block mt-3 text-success return">Volver al inicio de sesión</a>
             </div>
         </div>
     </div>
@@ -229,15 +248,19 @@
         </ul>
     </div>
 
-<script>
-    function showPopup() {
-        document.getElementById('creditPopup').style.display = 'block';
-    }
+    <script>
+        function showPopup() {
+            document.getElementById('creditPopup').style.display = 'block';
+        }
 
-    function hidePopup() {
-        document.getElementById('creditPopup').style.display = 'none';
-    }
-</script>
+        function hidePopup() {
+            document.getElementById('creditPopup').style.display = 'none';
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 </html>

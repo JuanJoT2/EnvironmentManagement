@@ -115,7 +115,7 @@
 
     <footer id="footer">
         <a href="/gestiondeambientes/login" class="btn btn-danger mb-2 logout">Cerrar sesión</a>
-        <p class="mb-0">© Copyright Alertas Tempranas. All Rights Reserved</p>
+        <p class="mb-0">© Copyright Gestión de ambientes Sena. All Rights Reserved</p>
         <p>Designed by Sena</p>
     </footer>
 

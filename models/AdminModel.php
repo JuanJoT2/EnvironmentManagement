@@ -17,7 +17,6 @@ include_once 'config/db.php';
             }
         }
         
-    
         public function modificarAmbiente($id, $nombre, $torre, $observaciones) {
             $conn = Database::connect();
             $sql = "UPDATE t_ambientes SET Nombre='$nombre', Torre='$torre', Observaciones='$observaciones' WHERE Id_ambiente=$id";
@@ -105,7 +104,6 @@ public function modificarComputador($id, $tipo, $marca, $modelo, $serial, $placa
         }
     }
 }
-
 public function obtenerComputadorPorId($id) {
     $conn = Database::connect();
     $sql = "SELECT * FROM t_computadores WHERE Id_computador='$id'";

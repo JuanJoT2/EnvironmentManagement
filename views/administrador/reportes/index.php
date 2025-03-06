@@ -124,7 +124,7 @@ $db = Database::connect();
             <a href="<?php echo $url_regresar; ?>" class="button boton-centrado" id="btn-regresar">Regresar</a>
        </div>
         <div class="salir">
-            <button id="btn_salir">Salir</button>
+            <button href="../../gestiondeambientes/login" id="btn_salir">Salir</button>
         </div>
         <p>© 2025 Gestión de Ambientes de Formación - Todos los derechos reservados.</p>
     </footer>
