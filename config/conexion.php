@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 $conexion = new mysqli("localhost", "root", "", "reportesambientes");
@@ -10,19 +9,5 @@ if ($conexion->connect_error) {
 
 if (!$conexion->set_charset("utf8mb4")) {
     die("Error al configurar el conjunto de caracteres: " . $conexion->error);
-=======
-<?php 
-
-class Conexion{
-    public function getConexion(){
-        $host = "localhost"; 
-        $dbName = "reportesambientes";
-        $user = "root";
-        $pass = "";
-        $conexion = new PDO("mysql:host=$host;dbname=$dbName", $user, $pass);
-
-        return $conexion;
-    }
->>>>>>> 7ff67ecefcebbca162f57bd3d395b4ace2e044d5
 }
 ?>
