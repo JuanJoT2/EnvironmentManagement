@@ -2,6 +2,7 @@
     // Conectar a la base de datos
     require_once 'config/db.php';
     $db = Database::connect();
+
 ?>
 
 <!DOCTYPE html>
@@ -114,10 +115,10 @@
                                 echo "<td>" . $row['Nineras'] . "</td>";
                                 echo "<td>";
                                 if ($row['Estado'] !== 'Inhabilitado') {
-                                    $url_update = '/dashboard/gestion%20de%20ambientes/admin/updateAmbiente/';
+                                    $url_update = 'updateAmbiente/';
                                     echo "<a href='" . $url_update . $row['Id_ambiente'] . "' class='boton-modificar'><img src='../assets/editar.svg'></a>";
 
-                                    $url_update = '/dashboard/gestion%20de%20ambientes/admin/generateQR/';
+                                    $url_update = 'generateQR/';
                                     echo "<a href='" . $url_update . $row['Id_ambiente'] . "' class='boton-generar-qr' boton-accion ><img src='../assets/qr-code.svg'></a>";
                                 } else {
                                     echo "<a href='#' onclick='confirmarHabilitar(" . $row['Id_ambiente'] . ")' class='boton-habilitar boton-accion'><img src='../assets/habilitar.svg'></a>";
@@ -141,7 +142,7 @@
             <div class="filtro-y-crear">
                 <div class="crear-ambiente">
                     <?php
-                    $url_create = '/dashboard/gestion%20de%20ambientes/admin/createAmbiente/';
+                    $url_create = 'createAmbiente/';
                     ?>
                     <ul>
                         <li><a href="<?php echo $url_create; ?>" id="btn-create">Crear Nuevo Ambiente</a></li>
@@ -151,6 +152,8 @@
 
         </section>
     </main>
+
+    <!--  -->
 
     <footer class="text-center p-3 bg-dark text-white mt-4">
 

@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../assets/styles.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
@@ -126,7 +127,7 @@
                             echo "<td>" . $row['EstadoHardware'] . "</td>";
                             echo "<td>" . $row['EstadoSoftware'] . "</td>";
                             echo "<td>";
-                            $url_update_c = '/dashboard/gestion%20de%20ambientes/admin/updateComputador/';
+                            $url_update_c = 'updateComputador/';
                             echo "<a href='" . $url_update_c . $row['Id_computador'] . "' class='boton-modificar'><img src='../assets/editar.svg'></a>";
                             echo "</td>";
                             echo "</tr>";
@@ -146,7 +147,7 @@
             <div class="crear-ambiente">
                 <?php
                 // Construir la URL adecuada para el botón de "Gestión de Ambientes"
-                $url_create = '/dashboard/gestion%20de%20ambientes/admin/createComputador/';
+                $url_create = 'createComputador/';
                 ?>
                 <ul>
                     <li><a href="<?php echo $url_create; ?>" id="btn-create">Crear Nuevo Computador</a></li>

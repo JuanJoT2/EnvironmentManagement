@@ -91,7 +91,7 @@
                         echo "<td>" . $row["Rol"] . "</td>";
                         echo "<td>";
                         
-                            $url_update = '/dashboard/gestion%20de%20ambientes/usuarios/updateUsuario/' . $row['id_usuario'];
+                            $url_update = 'updateUsuario/' . $row['id_usuario'];
                             echo "<a href='" . $url_update . "' class='boton-modificar'><img src='../assets/editar.svg'></a>";
                         echo "</td>";
                         echo "</tr>";
@@ -107,7 +107,7 @@
             <div class="crear-ambiente">
                 <ul>
                     <?php
-                    $url_create = '/dashboard/gestion%20de%20ambientes/usuarios/createUsuario/';
+                    $url_create = 'createUsuario/';
                     ?>
                     <li><a href="<?php echo $url_create; ?>" id="btn-create">Crear Nuevo Usuario</a></li>
                 </ul>
