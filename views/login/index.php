@@ -1,3 +1,25 @@
+<?php
+session_start(); // Asegúrate de que la sesión esté iniciada
+
+if (isset($_SESSION['alert'])) {
+    $alert = $_SESSION['alert'];
+    // Mostrar la alerta en el frontend
+    echo "<script>
+        Swal.fire({
+            title: '{$alert['title']}',
+            text: '{$alert['text']}',
+            icon: '{$alert['icon']}',
+            confirmButtonText: 'Aceptar'
+        }).then(function() {
+            window.location.href = '{$alert['redirect']}';
+        });
+    </script>";
+    
+    // Limpiar la alerta después de mostrarla
+    unset($_SESSION['alert']);
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -6,6 +28,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
     <link rel="stylesheet" href="public/css/login.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css" rel="stylesheet">
+
     
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
@@ -128,7 +152,6 @@
         }
     </script>
 
-    
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

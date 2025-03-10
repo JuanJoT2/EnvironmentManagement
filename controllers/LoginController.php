@@ -46,6 +46,10 @@ class LoginController {
                 }
                 
             } else {
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                ";
                 echo "Correo o clave incorrecta";
             }
         } else {

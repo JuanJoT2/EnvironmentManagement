@@ -1,3 +1,10 @@
+<?php	
+/*
+require_once ("../../models/RecuperarModel.php");
+require_once ("../../controllers/RecuperarController.php");
+*/
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
