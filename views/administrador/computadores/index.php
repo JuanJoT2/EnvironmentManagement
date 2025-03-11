@@ -65,10 +65,10 @@
         </div>
     </nav>
 
-    <main>
+    <main class="container contenido">
         <section class="ambiente" id="section-ambiente">
             <div class="subtitulo-ambiente">
-                <h2>Administracion de Computadores</h2>
+                <h2>Administración de Computadores</h2>
             </div>
 
             <div class="descripcion-ambiente">

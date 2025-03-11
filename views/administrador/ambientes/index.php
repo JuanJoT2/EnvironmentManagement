@@ -64,7 +64,7 @@
         </div>
     </nav>
 
-    <main>
+    <main class="container contenido">
         <section class="ambiente" id="section-ambiente">
 
             <div class="subtitulo-ambiente">

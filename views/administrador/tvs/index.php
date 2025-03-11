@@ -62,8 +62,80 @@
         </div>
     </nav>
 
-    <main class="container my-4">
+    <main class="container contenido">
+        <section class="ambiente" id="section-ambiente">
+            <div class="subtitulo-ambiente">
+                <h2>Administración de Tv's</h2>
+            </div>
 
+            <div class="descripcion-ambiente">
+                <p>Gestión de ambientes de formación</p>    
+            </div>
+
+            <div class="tabla-ambientes tabla-scroll">
+                <table class="table table-striped table_id" border="1" id="tabla-ambientes">
+                    <thead class="aspects">
+                        <tr class="indicadores">
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Serial</th>
+                            <th>Placa de Inventario</th>
+                            <th>Ambiente</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            //Consulta en la Base de datos
+                            $query = "SELECT  c.Id_televisor, c.Marca, c.Modelo, c.Serial, c.PlacaInventario, a.Nombre, c.Observaciones 
+                            FROM t_televisores AS c
+                            INNER JOIN t_ambientes AS a ON c.Id_ambiente = a.Id_ambiente";
+
+
+                            if (!empty($filtros)) {
+                                $query .= " WHERE " . implode(" AND ", $filtros);
+                            }
+
+                            $result = $db->query($query);
+
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>" . $row['Marca'] . "</td>";
+                                    echo "<td>" . $row['Modelo'] . "</td>";
+                                    echo "<td>" . $row['Serial'] . "</td>";
+                                    echo "<td>" . $row['PlacaInventario'] . "</td>";
+                                    echo "<td>" . $row['Nombre'] . "</td>";
+                                    echo "<td>";
+                                    $url_update_t = 'updateTvs/';
+                                    echo "<a href='" . $url_update_t . $row['Id_televisor'] . "' class=boton-modificar><img src='../assets/editar.svg'></a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                // Si no hay filas en el resultado, mostrar un mensaje de que no hay registros
+                                echo "<tr><td colspan='6'> No hay registros </td></tr>";
+                            }
+
+                            // Cerrar la conexion a la base de datos
+                            $db->close();
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+                        
+            <div class="filtro-y-crear">
+                <div class="crear-ambiente">
+                    <?php
+                        // Construir la URL adecuada para el boton de "Gestión de ambientes"
+                        $url_create = 'createTvs/';
+                    ?>
+                    <ul>
+                        <li><a href="<?php echo $url_create; ?>" id="btn-create">Crear nuevo Tv</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer id="footer">

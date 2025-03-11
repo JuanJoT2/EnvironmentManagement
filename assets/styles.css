@@ -606,6 +606,31 @@ button{
     background-color: #0d6c12;
 }
 
+/* Tabla */
+
+.contenido{
+    align-items: center;
+    display: flex;
+    justify-content: space-around
+}
+
+@media screen and (max-width: 768px) {
+    .contenido {
+        overflow-x: auto;
+        padding: 10px;
+    }
+
+    table {
+        font-size: 12px;
+        max-width: 100%;
+    }
+
+    th, td {
+        padding: 5px;
+        white-space: nowrap; /* Evita que las celdas se rompan */
+    }
+}
+
 @keyframes fly {
     0% {
         transform: translate(0);
