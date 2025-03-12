@@ -139,14 +139,16 @@ include_once 'config/db.php';
         public function modificarTelevisor($id, $marca, $modelo, $serial, $placaInventario, $nuevoIdAmbiente, $checkTv, $observaciones) {
             $conn = Database::connect();
 
+            if (!$conn) {
+                die("Error de conexión a la base de datos: " . $conn->connect_error);
+            }
+
             // Verificar la existencia del nuevo ID del ambiente solo si le proporciona
             if ($nuevoIdAmbiente !== null) {
                 $verificarExistencia = $conn->query("SELECT Id_ambiente FROM t_ambientes WHERE Id_ambiente = '$nuevoIdAmbiente'");
-
                 if ($verificarExistencia->num_rows > 0 ) {
                     // Si el nuevo ID de ambiente existe, proceder con la actualización del televisor
                     $sql = "UPDATE t_televisores SET Marca='$marca', Modelo='$modelo', Serial='$serial', PlacaInventario='$placaInventario', Id_ambiente='$nuevoIdAmbiente', CheckTv='$checkTv', Observaciones='$observaciones' WHERE Id_televisor='$id'";
-
                     if ($conn->query($sql) === TRUE) {
                         return true;
                     } else {
@@ -169,13 +171,29 @@ include_once 'config/db.php';
 
         public function obtenerTelevisorPorId($id) {
             $conn = Database::connect();
-            $sql = "SELECT * FROM t_televisores WHERE Id_televisor='$id'";
+
+            $sql = "SELECT * FROM t_televisores WHERE Id_televisor=$id";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
                 return $result->fetch_assoc();
             } else {
                 return null;
+            }
+        }
+
+        // Apartado de Modelo para TABLEROS 
+
+        public function guardarTablero($marca, $placaInventario, $id_ambiente, $checkTablero, $observaciones) {
+            $conn = Database::connect();
+
+            $sql = "INSERT INTO t_tableros (Marca, PlacaInventario, Id_ambiente, CheckTablero, Observaciones)
+                    VALUES ('$marca', '$placaInventario', '$id_ambiente', '$checkTablero', '$observaciones')";
+
+            if($conn->query($sql) === TRUE) {
+                return true;
+            } else {
+                return false;
             }
         }
 

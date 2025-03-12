@@ -61,7 +61,7 @@ if (isset($_GET['success']) && $_GET['success'] === 'true') : ?>
                 <input type="email" id="correo" name="correo" value="<?php echo isset($usuario['Correo']) ? $usuario['Correo'] : ''; ?>" required><br><br>
 
                 <label for="clave">Clave:</label><br>
-                <input type="password" id="clave" name="clave" value="<?php echo isset($usuario['Clave']) ? $usuario['Clave'] : ''; ?>" required>
+                <input type="password" id="clave" name="clave" value="<?php echo isset($usuario['Clave']) ? $usuario['Clave'] : ''; ?>" required><br>
                 <button type="button" class="generate" id="mostrarClave">Mostrar Clave</button><br><br>
 
                 <label for="rol">Rol:</label><br>

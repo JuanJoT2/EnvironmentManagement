@@ -1,9 +1,9 @@
 <?php
-    // Verificar si la actualización fue exitosa mediante el parámetro GET 'success'
-    if(isset($_GET['success']) && $_GET['success'] === 'true'): ?>
-        <script>
-            alert("Televisor actualizado exitosamente");
-        </script>
+// Verificar si la actualización fue exitosa mediante el parámetro GET 'success'
+if (isset($_GET['success']) && $_GET['success'] === 'true') : ?>
+    <script>
+        alert("Usuario actualizado exitosamente");
+    </script>
 <?php endif; ?>
 
 <!DOCTYPE html>

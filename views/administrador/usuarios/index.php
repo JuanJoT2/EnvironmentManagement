@@ -12,6 +12,11 @@
     <link rel="stylesheet" type="text/css" href="../assets/styles.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+
+    <!-- Incluir Boostrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
@@ -56,7 +61,7 @@
             </div>
     </nav>
 
-    <main class="container my-4">
+    <main class="container contenido">
         <section class="ambiente" id="section-ambiente">
             <div class="subtitulo-ambiente">
                 <h2>Usuarios</h2>
@@ -68,7 +73,7 @@
 
             <div class="tabla-ambientes tabla-scroll">
                 <section>
-                    <table class="table table-striped table-dark table_id" border="1" id="tabla-ambientes">
+                    <table class="table table-striped table_id" border="1" id="tabla-ambientes">
                         <thead class="aspects">
                             <tr>
                                 <th>ID</th>

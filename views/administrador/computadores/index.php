@@ -84,7 +84,7 @@
                             <th>Modelo</th>
                             <th>Serial</th>
                             <th>Placa de Inventario</th>
-                            <th>Id ambiente</th>
+                            <th>Ambiente</th>
                             <th>Hardware</th>
                             <th>Software</th>
                             <th>Acción</th>

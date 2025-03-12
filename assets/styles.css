@@ -596,6 +596,16 @@ button{
     margin-top: 30px;
 }
 
+#mostrarClave{
+    border-radius: 15px;
+}
+
+#mostrarClave:hover{
+    border-radius: 0;
+    transition: 0.7s ease;
+    background-color: #0d6c12;
+}
+
 #generarClave{
     border-radius: 15px;
 }

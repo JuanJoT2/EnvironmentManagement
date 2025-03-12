@@ -187,7 +187,7 @@ class AdminController {
         }
     }
 
-    // apartado de controlador para Televisores (tv's)----------------------------------------------------------------
+    // Apartado de controlador para Televisores (tv's)----------------------------------------------------------------
     public function tvs() {
         include 'views/administrador/tvs/index.php';
     }
@@ -260,7 +260,35 @@ class AdminController {
         }
     }
 
-    // Apartado de controlador para USUARIOS--------------------------------------------------------------------------
+    // Apartado de controlador para Tableros
+
+    public function tableros() {
+        include 'views/administrador/tableros/index.php';
+    }
+
+    public function createTablero() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $marca = $_POST["marca"];
+            $placaInventario = $_POST["placaInventario"];
+            $id_ambiente = $_POST["id_ambiente"];
+            $checkTablero = isset($_POST["checkTablero"]) ? 1 : 0;
+            $observaciones = $_POST["observaciones"];
+
+            $adminModel = new AdminModel();
+            $result = $adminModel->guardarTablero($marca, $placaInventario, $id_ambiente, $checkTablero, $observaciones);
+
+            // Enviar respuesta JSON dependiendo del resultado
+            if ($result) {
+                echo json_encode(['success' => true]);  // Respuesta de éxito en formato JSON
+            } else {
+                echo json_encode(['success' => false, 'error' => 'No se pudo crear el Tablero.']);  // Respuesta de error en formato JSON
+            }
+            exit();  // Importante para evitar que se siga ejecutando el script
+            }   else {
+            include 'views/administrador/tableros/create.php';
+        }
+        
+    }
 
     // Apartado de controlador para REPORTES--------------------------------------------------------------------------
 
