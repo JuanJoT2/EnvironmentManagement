@@ -95,10 +95,10 @@
                     '/gestiondeambientes/admin/ambientes' => 'Gestión de Ambientes',
                     '/gestiondeambientes/admin/reportes' => 'Gestión de Reportes',
                     '/gestiondeambientes/admin/tvs' => 'Televisores (TVs)',
-                    // '/gestiondeambientes/admin/sillas' => 'Sillas',
-                    // '/gestiondeambientes/admin/mesas' => 'Mesas',
+                    '/gestiondeambientes/admin/sillas' => 'Sillas',
+                    '/gestiondeambientes/admin/mesas' => 'Mesas',
                     '/gestiondeambientes/admin/tableros' => 'Tableros',
-                    // '/gestiondeambientes/admin/nineras' => 'Niñeras',
+                    '/gestiondeambientes/admin/nineras' => 'Niñeras',
                     '/gestiondeambientes/usuarios/usuarios' => 'Gestión de Usuarios',
                     '/gestiondeambientes/admin/computadores' => 'Computadores',
                 ];

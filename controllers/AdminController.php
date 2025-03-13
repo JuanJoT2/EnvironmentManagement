@@ -290,6 +290,46 @@ class AdminController {
         
     }
 
+    public function updateTablero($id) {
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $marca = $_POST["marca"];
+            $placaInventario = $_POST["placaInventario"];
+            $nuevoIdAmbiente = isset($_POST["id_ambiente"]) ? $_POST["id_ambiente"] : null;
+            $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : '';
+
+            $adminModel = new AdminModel();
+            $result = $adminModel->modificarTablero($id, $marca, $placaInventario, $nuevoIdAmbiente, $checkTablero, $observaciones);
+
+            if ($result) {
+                // Redirigir a la lista del tablero si la actualización fue exitosa
+                header("Location: ../tableros");
+                exit();
+            } else {
+                // Manejar el caso en que ocurra un error al actualizar el tablero
+                header("Location: index.php?error=Error al actualizar el tablero&id=$id");
+                exit();
+            }
+        } else {
+            // Obtener los datos del tabkero existente
+            $adminModel = new AdminModel();
+            $tablero = $adminModel->obtenerTableroPorId($id);
+
+            if ($tablero) {
+                // Obtener los datos del ambiente asociado al computador
+                $idAmbiente = $tablero['Id_ambiente'];
+        
+                // Obtener los datos del ambiente
+                $ambiente = $adminModel->obtenerAmbientePorId($idAmbiente);
+        
+                // Renderizar el formulario de actualización con los datos del computador y del ambiente
+                include 'views/administrador/tableros/update.php';
+            } else {
+                // Manejar el caso en que el computador no existe
+                echo "Error: El computador especificado no existe.";
+            }
+        }
+    }
+
     // Apartado de controlador para REPORTES--------------------------------------------------------------------------
 
     public function reportes() {

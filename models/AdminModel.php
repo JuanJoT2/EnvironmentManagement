@@ -197,6 +197,47 @@ include_once 'config/db.php';
             }
         }
 
+        public function obtenerTableroPorId($id) {
+            $conn = Database::connect();
+            $sql = "SELECT * FROM t_tableros WHERE Id_tablero='$id'";
+            $result = $conn->query($sql);
+
+            if($result->num_rows > 0) {
+                return $result->fetch_assoc();
+            } else {
+                return null;
+            }
+        }
+
+        public function modificarTablero($id, $marca, $placaInventario, $nuevoIdAmbiente, $checkTablero, $observaciones) {
+            $conn = Database::connect();
+
+            // Verificar la existencia del nuevo ID de ambiente solo si se proporciona
+            if ($nuevoIdAmbiente !== null) {
+                $verificarExistencia = $conn->query("SELECT Id_ambiente FROM t_ambientes WHERE Id_ambiente = '$nuevoIdAmbiente'");
+                if ($verificarExistencia->num_rows > 0) {
+                    // Si el nuevo ID del ambiente existe, proceder con la actualización del tablero
+                    $sql = "UPDATE t_tableros SET Marca='$marca', PlacaInventario='$placaInventario', Id_ambiente='$nuevoIdAmbiente', CheckTablero='$checkTablero', Observaciones='$observaciones' WHERE Id_tablero='$id'";
+                    if ($conn->query($sql) === TRUE) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    // Si el nuevo ID de ambiente no existe, manejar el error al devolver falso según sea necesario
+                    return false;
+                }
+            } else {
+                // Si no se proporciona un nuevo ID de ambiente. actualizar el tablero sin verificar la existencia
+                $sql = "UPDATE t_tableros SET Marca='$marca', PlacaInventario='$placaInventario', Id_ambiente='$nuevoIdAmbiente', CheckTablero='$checkTablero', Observaciones='$observaciones' WHERE Id_tablero='$id'";
+                if ($conn->query($sql) === TRUE) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
         // Apartado de Modelo para Reportes----------------------------------------------------------------------------
 
         public function insertarReporte($observacion, $id_usuario, $id_ambiente) {

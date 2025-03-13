@@ -57,7 +57,7 @@
             <button class="toggle-vis indicators" data-column="1">Modelo</button>
             <button class="toggle-vis indicators" data-column="2">Serial</button>
             <button class="toggle-vis indicators" data-column="3">Placa de Inventario</button>
-            <button class="toggle-vis indicators" data-column="4">Id ambiente</button>
+            <button class="toggle-vis indicators" data-column="4">Ambientes</button>
             <button class="toggle-vis indicators" data-column="5">Acción</button>
         </div>
     </nav>
@@ -80,7 +80,7 @@
                             <th>Modelo</th>
                             <th>Serial</th>
                             <th>Placa de Inventario</th>
-                            <th>Ambiente</th>
+                            <th>Ambientes</th>
                             <th>Acción</th>
                         </tr>
                     </thead>

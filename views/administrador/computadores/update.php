@@ -62,7 +62,7 @@
 
                 <label for="modelo">Modelo:</label><br>
                 <input type="text" id="modelo" name="modelo" value="<?php echo isset($computador['Modelo']) ? $computador['Modelo'] : ''; ?>"><br><br>
-
+        
                 <label for="serial">Serial:</label><br>
                 <input type="text" id="serial" name="serial" value="<?php echo isset($computador['Serial']) ? $computador['Serial'] : ''; ?>"><br><br>
 

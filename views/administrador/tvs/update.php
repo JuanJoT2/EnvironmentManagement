@@ -64,7 +64,7 @@ if (isset($_GET['success']) && $_GET['success'] === 'true') : ?>
                 <label for="placaInventario">Placa de inventario:</label><br> <!-- Corregido: 'placainventario' en lugar de 'placainvetario' -->
                 <input type="text" id="placaInventario" name="placaInventario" value="<?php echo isset($televisor['PlacaInventario']) ? $televisor['PlacaInventario'] : ''; ?>"><br><br> <!-- Corregido: 'Placainventario' en lugar de 'Placainvetario' -->
 
-                <label for="id_ambiente">ID del Ambiente:</label>
+                <label for="id_ambiente">Ambientes:</label>
                 <select id="id_ambiente" name="id_ambiente" value="<?php echo $ambiente['Id_ambiente']; ?>" readonly>
                 
                     <option value="">Seleccione...</option>

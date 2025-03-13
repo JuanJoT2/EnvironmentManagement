@@ -1,33 +1,33 @@
 <?php
-// Conexión a la base de datos y sesión
-require_once 'config/db.php';
-$db = Database::connect();
-session_start();
+    // Conexión a la base de datos y sesión
+    require_once 'config/db.php';
+    $db = Database::connect();
+    session_start();
 
-if (isset($_SESSION['clave'])) {
-    $clave = $_SESSION['clave'];
+    if (isset($_SESSION['clave'])) {
+        $clave = $_SESSION['clave'];
 
-    $query = "SELECT * FROM t_usuarios WHERE Clave = ?";
-    $stmt = $db->prepare($query);
-    $stmt->bind_param("s", $clave);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        $query = "SELECT * FROM t_usuarios WHERE Clave = ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("s", $clave);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if ($result->num_rows === 0) {
-        $nombre = "Nombre no encontrado";
-        $cargo = "Cargo no encontrado";
+        if ($result->num_rows === 0) {
+            $nombre = "Nombre no encontrado";
+            $cargo = "Cargo no encontrado";
+        } else {
+            $row = $result->fetch_assoc();
+            $nombre = $row['Nombres'] . ' ' . $row['Apellidos'];
+            $cargo = $row['Rol'];
+        }
+
+        $stmt->close();
+        $db->close();
     } else {
-        $row = $result->fetch_assoc();
-        $nombre = $row['Nombres'] . ' ' . $row['Apellidos'];
-        $cargo = $row['Rol'];
+        $nombre = "Nombre no proporcionado";
+        $cargo = "Cargo no proporcionado";
     }
-
-    $stmt->close();
-    $db->close();
-} else {
-    $nombre = "Nombre no proporcionado";
-    $cargo = "Cargo no proporcionado";
-}
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +39,7 @@ if (isset($_SESSION['clave'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki:wght@400..700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki:wght@400..700&display=swap');
         /* Estilos Generales */
         body {
             font-family: "Noto Serif Khojki", serif;
@@ -143,6 +143,7 @@ if (isset($_SESSION['clave'])) {
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
         }
     </style>
+
 </head>
 
 <body>
@@ -202,7 +203,7 @@ if (isset($_SESSION['clave'])) {
             scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
             scanner.addListener('scan', function (content) {
                 alert('Escaneado con éxito: ' + content);
-                window.location.href = '/dashboard/gestion%20de%20ambientes/instructor/readQR/' + encodeURIComponent(content);
+                window.location.href = 'readQR/' + encodeURIComponent(content);
             });
 
             Instascan.Camera.getCameras().then(function (cameras) {
