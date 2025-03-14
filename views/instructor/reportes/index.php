@@ -94,6 +94,7 @@
     }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -102,6 +103,10 @@
     <title>Información Relacionada</title>
     <link rel="stylesheet" href="../../styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 
     <style>
         body {
@@ -130,17 +135,34 @@
             font-size: 1.2em;
         }
 
-        .container {
+        .inside {
             max-width: 100%;
-            margin: 20px;
+            margin-top: 20px;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .sublist {
+        .desing{
             display: none;
+        }
+
+        /* .desing {
+            display: flex;
+            margin: 10px 0 5px 0;
+            justify-content: space-around;
+            flex-wrap: nowrap;
+            align-items: center;
+        } */
+
+        .hardware-list{
+            display: none;
+            margin-top: 20px;
+        }
+
+        #text{
+            margin: 15px;
         }
 
         h1 {
@@ -172,8 +194,8 @@
         }
 
         @media only screen and (max-width: 600px) {
-            .container {
-                margin: 10px;
+            .inside {
+                margin-top: 14px;
                 padding: 10px;
             }
             h1 {
@@ -262,93 +284,158 @@
         .expand {
             display: inline-block;
             width: 20px;
-            height: 20px;
             text-align: center;
             border: 1px solid #000;
             margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .contenedor{
+            background: transparent;
+            border: none;
+            max-width: 80%;
+            /* margin: 20px; */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilo del footer (añade este HTML al final de tu archivo HTML) */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* Estilo de los enlaces dentro del footer */
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Estilo para resaltar enlaces en el hover */
+        footer a:hover {
+            text-decoration: underline;
         }
 
     </style>
 
 </head>
 <body>
-    
-    <form id="observacionForm" action="" method="POST">
-        <div class="header">
-            <img src="../../assets/Logo-Sena.jpg" alt="logo">
-            <h1>Gestión de Ambiente</h1>
-        </div>
-        
-        <div class="container">
-            <p class="date-time">Fecha: <?php echo $fecha_actual; ?> Hora: <?php echo $hora_actual; ?></p>
-            <h1 class="titulo"> <?php echo $nombre; ?></h1>
-            <ul>
-                <li class="expandable">
-                    <span class="expand" onclick="toggleList(this)">+</span>
-                    <span class="label">Infraestructura:</span>
-                    <ul class="sublist"></ul>
-                </li>
-                <li class="expandable">
-                    <span class="expand" onclick="toggleList(this)">+</span>
-                    <span class="label">Mobiliario:</span>
-                    <ul class="sublist">
-                        <span class="label">Sillas:</span>
-                        <span class="value"><?php echo $sillas; ?></span><br>
-                        <span class="label">Mesas:</span>
-                        <span class="value"><?php echo $mesas; ?></span><br>
-                        <span class="label">Tableros:</span>
-                        <span class="value"><?php echo $tablero; ?></span>
-                    </ul>
-                </li>
-                <li class="expandable">
-                    <span class="expand" onclick="toggleList(this)">+</span>
-                    <span class="label">Software:</span>
-                    <ul class="sublist"></ul>
-                </li>
-                <li class="expandable">
-                    <span class="expand" onclick="toggleList(this)">+</span>
-                    <span class="label">Hardware:</span>
-                    <input type="text" onkeyup="filterList(this, 'hardware-list')" placeholder="Filtrar por placa...">
-                    <ul class="sublist hardware-list">
-                        <?php foreach($computadores as $computador): ?>
-                            <li class="hardware-item">
-                                <input type="checkbox" name="checkpc[]" id="checkpc<?php echo $computador['Serial']; ?>" value="<?php echo $computador['Serial']; ?>" <?php echo ($computador['CheckPc'] == 1) ? 'checked' : ''; ?> onclick="toggleObservationField('checkpc<?php echo $computador['Serial']; ?>', 'observacion<?php echo $computador['Serial']; ?>')">
-                                <span><?php echo htmlspecialchars($computador['Marca']); ?></span>
-                                <span><?php echo htmlspecialchars($computador['Modelo']); ?></span>
-                                <span><?php echo $computador['Serial']; ?></span>
-                                <textarea name="observacion[<?php echo $computador['Serial']; ?>]" id="observacion<?php echo $computador['Serial']; ?>" placeholder="Novedad encontrada" style="display:<?php echo ($computador['CheckPc'] == 1) ? 'none' : 'block'; ?>"></textarea>
-                            </li>
-                        <?php endforeach; ?>
 
-                    </ul>
-                </li>
-            </ul>
-            <div class="submit-btn">
-                <input type="submit" value="Enviar">
+    <main class="container contenedor">
+        <form id="observacionForm" action="" method="POST">
+            <div class="header">
+                <img src="../../assets/Logo-Sena.jpg" alt="logo">
+                <h1>Gestión de Ambiente</h1>
             </div>
-    </form>
+            
+            <div class="container inside">
+                <p class="date-time">Fecha: <?php echo $fecha_actual; ?> Hora: <?php echo $hora_actual; ?></p>
+                <h1 class="titulo"> <?php echo $nombre; ?></h1>
+                <ul>
+                    <li class="expandable">
+                        <span class="expand" onclick="toggleList(this)">+</span>
+                        <span class="label">Infraestructura:</span>
+                        <ul class="sublist desing"></ul>
+                    </li>
+                    <li class="expandable">
+                        <span class="expand" onclick="toggleList(this)">+</span>
+                        <span class="label">Mobiliario:</span>
+                        <ul class="sublist desing">
+                            <span class="label">Sillas:</span>
+                            <span class="value"><?php echo $sillas; ?></span><br>
+                            <span class="label">Mesas:</span>
+                            <span class="value"><?php echo $mesas; ?></span><br>
+                            <span class="label">Tableros:</span>
+                            <span class="value"><?php echo $tablero; ?></span>
+                        </ul>
+                    </li>
+                    <li class="expandable">
+                        <span class="expand" onclick="toggleList(this)">+</span>
+                        <span class="label">Software:</span>
+                        <ul class="sublist desing"></ul>
+                    </li>
+                    <li class="expandable">
+                        <span class="expand" onclick="toggleList(this)">+</span>
+                        <span class="label">Hardware:</span>
+                        <input type="text" onkeyup="filterList(this, 'hardware-list')" placeholder="Filtrar por placa...">
+                        <ul class="sublist hardware-list">
+                            <?php foreach($computadores as $computador): ?>
+                                <li class="hardware-item">
+                                    <input type="checkbox" name="checkpc[]" id="checkpc<?php echo $computador['Serial']; ?>" value="<?php echo $computador['Serial']; ?>" <?php echo ($computador['CheckPc'] == 1) ? 'checked' : ''; ?> onclick="toggleObservationField('checkpc<?php echo $computador['Serial']; ?>', 'observacion<?php echo $computador['Serial']; ?>')">
+                                    <span id="text"> Marca: <?php echo htmlspecialchars($computador['Marca']); ?></span>
+                                    <span id="text"> Modelo: <?php echo htmlspecialchars($computador['Modelo']); ?></span>
+                                    <span id="text"> Serial: <?php echo $computador['Serial']; ?></span>
+                                </li>
+                                <li>
+                                    <textarea name="observacion[<?php echo $computador['Serial']; ?>]" id="observacion<?php echo $computador['Serial']; ?>" placeholder="Novedad encontrada" style="display:<?php echo ($computador['CheckPc'] == 1) ? 'none' : 'block'; ?>"></textarea>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="submit-btn">
+                    <input type="submit" value="Enviar">
+                </div>
+            </div>
+        </form>
+        
         <p class="instrucciones">Sr(a) Instructor(a), en caso de evidenciar novedades al interior del ambiente de formación, seleccione el item adecuado y de forma muy concisa detalle la novedad encontrada y presiona ENVIAR</p>
         <p class="instrucciones">En caso contrario solo presione ENVIAR</p>
 
-    </div>
-
-    <div class="submit-btn">
+        <div class="submit-btn">
             <button onclick="mostrarHistorial()">Historial de Observaciones</button>
         </div>
 
-    <!-- Popup para mostrar el historial -->
-    <div class="popup" id="historialPopup">
-        <div class="popup-content">
-            <button class="close-btn" onclick="cerrarPopup()"></button>
-            <h2>Historial de Observaciones</h2>
-            <ul id="historialList">
-                <!-- Aquí se mostrará el historial de observaciones -->
-            </ul>
+        <!-- Popup para mostrar el historial -->
+        <div class="popup" id="historialPopup">
+            <div class="popup-content">
+                <button class="close-btn" onclick="cerrarPopup()"></button>
+                <h2>Historial de Observaciones</h2>
+                <ul id="historialList">
+                    <!-- Aquí se mostrará el historial de observaciones -->
+                </ul>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <footer id="footer">
+        <a href="/gestiondeambientes/login" class="btn btn-danger mb-2 logout">Cerrar Sesión</a>
+        <p class="mb-0">© Copyright Gestión de ambientes Sena. All Rights Reserved</p>
+        <p>Designed by Sena</p>
+    </footer>
+
+    <!-- Script para el footer -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let footer = document.getElementById("footer");
+            let bodyHeight = document.body.offsetHeight;
+            let windowHeight = window.innerHeight;
+
+            if (bodyHeight < windowHeight) {
+                footer.style.position = "fixed";
+                footer.style.bottom = "0";
+                footer.style.width = "100%";
+                footer.style.display = "block"; // Mostramos el footer solo cuando es necesario
+            } else {
+                footer.style.position = "relative";
+                footer.style.display = "block"; // Siempre visible si hay suficiente contenido
+            }
+        });
+    </script>
+
     <script>
 
-    function mostrarHistorial() {
+        function mostrarHistorial() {
             // Hacer una solicitud AJAX para obtener el historial de observaciones
             fetch('?historial=1')
                 .then(response => response.json())
@@ -386,9 +473,35 @@
         }
                 
         function toggleList(element) {
-            var sublist = element.parentElement.querySelector(".sublist");
-            sublist.style.display = sublist.style.display === "none" ? "block" : "none";
-            element.innerText = sublist.style.display === "none" ? "+" : "-";
+            var sublist = element.parentElement.querySelector(".desing, .hardware-list");
+
+            if (!sublist) return; // Evita errores si no encuentra el elemento
+
+            if (sublist.style.display === "none" || sublist.style.display === "") {
+                element.innerText = "-";
+
+                // Identifica el tipo de sublista y aplica el display correspondiente
+                if (sublist.classList.contains("desing")) {
+                    sublist.style.display = "flex";
+                } else if (sublist.classList.contains("hardware-list")) {
+                    sublist.style.display = "block";
+                }
+
+                // Estilos comunes
+                sublist.style.margin = "20px 0 5px 0";
+                sublist.style.flexWrap = "nowrap";
+                sublist.style.alignItems = "center";
+
+                // Estilos específicos
+                if (sublist.classList.contains("desing")) {
+                    sublist.style.justifyContent = "space-around";
+                } else if (sublist.classList.contains("hardware-list")) {
+                    sublist.style.justifyContent = "space-between";
+                }
+            } else {
+                sublist.style.display = "none";
+                element.innerText = "+";
+            }
         }
 
         function toggleObservationField(checkboxId, observationId) {
@@ -401,16 +514,37 @@
             var filter = input.value.toUpperCase();
             var ul = document.getElementsByClassName(listClassName)[0];
             var li = ul.getElementsByTagName('li');
+
             for (var i = 0; i < li.length; i++) {
-                var span = li[i].getElementsByTagName("span")[2];
-                var txtValue = span.textContent || span.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
+                // Verificar si el <li> es de clase "hardware-item"
+                if (li[i].classList.contains("hardware-item")) {
+                    var spans = li[i].getElementsByTagName("span");
+                    var txtValue = "";
+
+                    // Concatenar el texto de todos los spans dentro del <li>
+                    for (var j = 0; j < spans.length; j++) {
+                        txtValue += spans[j].textContent || spans[j].innerText;
+                    }
+
+                    // Mostrar u ocultar el <li> del hardware
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                        // Mostrar también el <li> siguiente (textarea)
+                        if (li[i].nextElementSibling) {
+                            li[i].nextElementSibling.style.display = "";
+                        }
+                    } else {
+                        li[i].style.display = "none";
+                        // Ocultar también el <li> siguiente (textarea)
+                        if (li[i].nextElementSibling) {
+                            li[i].nextElementSibling.style.display = "none";
+                        }
+                    }
                 }
             }
         }
+
+
 
         // Llamar a toggleObservationField para cada checkbox al cargar la página
         window.addEventListener('load', function() {
@@ -474,6 +608,7 @@
             });
 
         });
+
     </script>
 
 </body>

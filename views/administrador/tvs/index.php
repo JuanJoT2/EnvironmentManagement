@@ -2,6 +2,13 @@
     // Conectar a la base de datos
     require_once 'config/db.php';
     $db = Database::connect();
+
+    session_start();
+
+    // Deshabilitar caché del navegador
+    header("Cache-Control: no-cache, no-store, must-revalidate"); 
+    header("Pragma: no-cache"); 
+    header("Expires: 0"); 
 ?>
 
 <!DOCTYPE html>

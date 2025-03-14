@@ -1,4 +1,11 @@
 <?php
+
+    session_start();
+    
+    // Deshabilitar caché del navegador
+    header("Cache-Control: no-cache, no-store, must-revalidate"); 
+    header("Pragma: no-cache"); 
+    header("Expires: 0"); 
     // Verificar si la actualización fue exitosa mediante el parámetro GET 'success'
     if(isset($_GET['success']) && $_GET['success'] === 'true'): ?>
         <script>

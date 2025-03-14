@@ -1,3 +1,20 @@
+<?php
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+// if (!isset($_SESSION['id']) || $_SESSION['aut'] !== "SI") {
+//     session_unset();
+//     session_destroy();
+//     header("Location: /gestiondeambientes/login");
+//     exit();
+// }
+
+// Evitar caché para que el usuario no pueda volver con "atrás"
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

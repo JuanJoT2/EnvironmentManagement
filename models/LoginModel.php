@@ -66,17 +66,23 @@ class LoginModel {
     }
 
     private function getRedirectUrlByRole($role) {
-        switch ($role) {
-            case 'instructor':
-                return '../Views/instructor/index.php';
-            case 'coordinadorAcademico':
-                return '../Views/coordinador/index.php';
-            case 'coordinadorFormacion':
-                return '../Views/coordinador/index.php';
-            case 'bienestar':
-                return '../Views/Bienestar/index.php';
+        switch ($user['Rol']) {
+            case 'Administrador':
+                header("Location: /gestiondeambientes/admin/home");
+                //header("Location: /dashboard/gestion%20de%20ambientes/admin/home");
+                exit();
+            case 'Instructor':
+                header("Location: /gestiondeambientes/instructor/home");
+                //header("Location: /dashboard/gestion%20de%20ambientes/instructor/home");
+                exit();
+            case 'Encargado':
+                header("Location: /gestiondeambientes/encargado/home");
+                //header("Location: /dashboard/gestion%20de%20ambientes/encargado/home");
+                exit();
             default:
-                return '../Views/extras/iniciarSesion.php';
+                header("Location: /gestiondeambientes/login");
+                //header("Location: /dashboard/gestion%20de%20ambientes/login");
+                exit();
         }
     }
 }
