@@ -40,15 +40,15 @@ class UsuariosController {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nombres = $_POST["nombres"];
             $apellidos = $_POST["apellidos"];
-            $clave = $_POST["clave"];
+            $clave = $_POST["clave"]; // Puede estar vacía
             $correo = $_POST["correo"];
             $rol = $_POST["rol"];
-
+    
             $usuariosModel = new UsuariosModel();
             $result = $usuariosModel->modificarUsuario($id, $nombres, $apellidos, $clave, $correo, $rol);
-
+    
             if ($result) {
-                header("Location: ../usuarios");
+                header("Location: ../usuarios?success=true");
                 exit();
             } else {
                 header("Location: index.php?error=Error al actualizar el usuario&id=$id");
@@ -59,7 +59,7 @@ class UsuariosController {
             $usuario = $usuariosModel->obtenerUsuarioPorId($id);
             include 'views/administrador/usuarios/update.php';
         }
-    }
+    }    
 
     public function inhabilitarUsuario($id) {
         $usuariosModel = new UsuariosModel(); // Corregido a UsuariosModel

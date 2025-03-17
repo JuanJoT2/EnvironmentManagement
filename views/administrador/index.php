@@ -1,19 +1,25 @@
 <?php
-session_start();
+    session_start();
 
-// Verificar si el usuario ha iniciado sesión
-// if (!isset($_SESSION['id']) || $_SESSION['aut'] !== "SI") {
-//     session_unset();
-//     session_destroy();
-//     header("Location: /gestiondeambientes/login");
-//     exit();
-// }
+    // Si la sesión no está activa, redirigir al login
+    if (!isset($_SESSION['aut']) || $_SESSION['aut'] !== "SI") {
+        session_unset();
+        session_destroy();
+        echo "<script>
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/gestiondeambientes/login';
+        </script>";
+        exit();
+    }
 
-// Evitar caché para que el usuario no pueda volver con "atrás"
-header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
-header("Expires: 0");
+    // Evitar caché del navegador
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    header("Expires: 0");
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -112,10 +118,10 @@ header("Expires: 0");
                     '/gestiondeambientes/admin/ambientes' => 'Gestión de Ambientes',
                     '/gestiondeambientes/admin/reportes' => 'Gestión de Reportes',
                     '/gestiondeambientes/admin/tvs' => 'Televisores (TVs)',
-                    '/gestiondeambientes/admin/sillas' => 'Sillas',
-                    '/gestiondeambientes/admin/mesas' => 'Mesas',
+                    // '/gestiondeambientes/admin/sillas' => 'Sillas',
+                    // '/gestiondeambientes/admin/mesas' => 'Mesas',
                     '/gestiondeambientes/admin/tableros' => 'Tableros',
-                    '/gestiondeambientes/admin/nineras' => 'Niñeras',
+                    // '/gestiondeambientes/admin/nineras' => 'Niñeras',
                     '/gestiondeambientes/usuarios/usuarios' => 'Gestión de Usuarios',
                     '/gestiondeambientes/admin/computadores' => 'Computadores',
                 ];
@@ -131,10 +137,56 @@ header("Expires: 0");
     </main>
 
     <footer id="footer">
-        <a href="/gestiondeambientes/login" class="btn btn-danger mb-2 logout">Cerrar sesión</a>
+        <a href="../controllers/cerrarSesion.php" class="btn btn-danger mb-2 logout">Cerrar sesión</a>
         <p class="mb-0">© Copyright Gestión de ambientes Sena. All Rights Reserved</p>
         <p>Designed by Sena</p>
     </footer>
+
+    <!-- Destruir sesión -->
+    <script>
+        // Función para borrar historial y prevenir el acceso con "Atrás"
+        function bloquearHistorial() {
+            history.pushState(null, "", location.href);
+            window.onpopstate = function () {
+                history.pushState(null, "", location.href);
+            };
+        }
+
+        // Bloquear historial al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+            bloquearHistorial();
+
+            // Verificar si la sesión ha sido cerrada
+            if (!sessionStorage.getItem("autenticado")) {
+                window.location.href = "/gestiondeambientes/login";
+            }
+        });
+
+        // Guardar estado en sessionStorage al iniciar sesión
+        sessionStorage.setItem("autenticado", "SI");
+    </script>
+
+    <!-- Script cerrar sesión -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".logout").addEventListener("click", function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Se cerrará tu sesión.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, cerrar sesión"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "../controllers/cerrarSesion.php";
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- Script para el footer -->
     <script>

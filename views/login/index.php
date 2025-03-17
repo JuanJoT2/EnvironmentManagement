@@ -1,23 +1,23 @@
 <?php
-session_start(); // Asegúrate de que la sesión esté iniciada
+    session_start(); // Asegúrate de que la sesión esté iniciada
 
-if (isset($_SESSION['alert'])) {
-    $alert = $_SESSION['alert'];
-    // Mostrar la alerta en el frontend
-    echo "<script>
-        Swal.fire({
-            title: '{$alert['title']}',
-            text: '{$alert['text']}',
-            icon: '{$alert['icon']}',
-            confirmButtonText: 'Aceptar'
-        }).then(function() {
-            window.location.href = '{$alert['redirect']}';
-        });
-    </script>";
-    
-    // Limpiar la alerta después de mostrarla
-    unset($_SESSION['alert']);
-}
+    if (isset($_SESSION['alert'])) {
+        $alert = $_SESSION['alert'];
+        // Mostrar la alerta en el frontend
+        echo "<script>
+            Swal.fire({
+                title: '{$alert['title']}',
+                text: '{$alert['text']}',
+                icon: '{$alert['icon']}',
+                confirmButtonText: 'Aceptar'
+            }).then(function() {
+                window.location.href = '{$alert['redirect']}';
+            });
+        </script>";
+        
+        // Limpiar la alerta después de mostrarla
+        unset($_SESSION['alert']);
+    }
 ?>
 
 
@@ -112,6 +112,22 @@ if (isset($_SESSION['alert'])) {
         .popup button:hover {
             color: #000;
         }
+
+        #creditos{
+            background-color: #28a745;
+            color: white;
+            font-size: 15px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        #creditos:hover{
+            background-color: #218838;
+            transition: 0.6s ease;
+        }
     </style>
 
 
@@ -134,13 +150,13 @@ if (isset($_SESSION['alert'])) {
         <a href="/gestiondeambientes/recuperar/mostrarFormulario" class="d-block mt-3 text-success">Recuperar contraseña</a>
 
 
-        <!-- <button class="btn btn-link mt-2" onclick="showPopup()">Créditos</button> -->
+        <button class="btn btn-link mt-2" id="creditos" onclick="showPopup()"><i class="bi bi-feather2">Créditos</i></button>
     </div>
 
     <div class="popup" id="creditPopup">
         <button onclick="hidePopup()">X</button>
-        <h3>Créditos</h3>
-        <p>Desarrollado por el equipo de ADSO</p>
+        <h3>Créditos</h3><br> 
+        <p><i class="bi bi-bookmark-heart-fill">Desarrollado por el equipo de ADSO</i></p>
     </div>
     
     <script>

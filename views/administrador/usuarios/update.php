@@ -1,17 +1,30 @@
 <?php
 
-session_start();
+    session_start();
 
-// Deshabilitar caché del navegador
-header("Cache-Control: no-cache, no-store, must-revalidate"); 
-header("Pragma: no-cache"); 
-header("Expires: 0"); 
+    // Si la sesión no está activa, redirigir al login
+    if (!isset($_SESSION['aut']) || $_SESSION['aut'] !== "SI") {
+        session_unset();
+        session_destroy();
+        echo "<script>
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/gestiondeambientes/login';
+        </script>";
+        exit();
+    }
 
-// Verificar si la actualización fue exitosa mediante el parámetro GET 'success'
-if (isset($_GET['success']) && $_GET['success'] === 'true') : ?>
-    <script>
-        alert("Usuario actualizado exitosamente");
-    </script>
+    // Evitar caché del navegador
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+    // Verificar si la actualización fue exitosa mediante el parámetro GET 'success'
+    if (isset($_GET['success']) && $_GET['success'] === 'true') : ?>
+        <script>
+            alert("Usuario actualizado exitosamente");
+        </script>
 <?php endif; ?>
 
 <!DOCTYPE html>
@@ -97,20 +110,65 @@ if (isset($_GET['success']) && $_GET['success'] === 'true') : ?>
         });
     </script>
 
-    <footer>
-        <p>Sena todos los derechos reservados</p>
+    <footer id="footer">
+        <div class="regresar">
+            <?php
+            $url_regresar = '../usuarios';
+            ?>
+            <a href="<?php echo $url_regresar; ?>" class="button boton-centrado" id="btn-regresar">Regresar</a>
+        </div>
+        <div class="salir">
+            <a href="../controllers/cerrarSesion.php" id="btn_salir" class="button-admin">Salir</a>
+        </div>
+        <p class="mb-0 footerSize">© Copyright Gestión de ambientes Sena. All Rights Reserved<br>
+        Designed by Sena</p>
     </footer>
 
-    <div class="regresar">
-        <?php
-        $url_regresar = '../usuarios';
-        ?>
-        <a href="<?php echo $url_regresar; ?>" class="button boton-centrado" id="btn-regresar">Regresar</a>
-    </div>
+    <!-- Script cerrar sesión -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".salir").addEventListener("click", function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Se cerrará tu sesión.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, cerrar sesión"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "../controllers/cerrarSesion.php";
+                    }
+                });
+            });
+        });
+    </script>
 
-    <div class="salir">
-        <button id="btn_salir">Salir</button>
-    </div>
+    <!-- Destruir sesión -->
+    <script>
+        // Función para borrar historial y prevenir el acceso con "Atrás"
+        function bloquearHistorial() {
+            history.pushState(null, "", location.href);
+            window.onpopstate = function () {
+                history.pushState(null, "", location.href);
+            };
+        }
+
+        // Bloquear historial al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+            bloquearHistorial();
+
+            // Verificar si la sesión ha sido cerrada
+            if (!sessionStorage.getItem("autenticado")) {
+                window.location.href = "/gestiondeambientes/login";
+            }
+        });
+
+        // Guardar estado en sessionStorage al iniciar sesión
+        sessionStorage.setItem("autenticado", "SI");
+    </script>
 
     <!-- Boostrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

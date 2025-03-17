@@ -26,27 +26,36 @@ class UsuariosModel{
     public function modificarUsuario($id, $nombres, $apellidos, $clave, $correo, $rol) {
         $conn = Database::connect();
     
+        // Verificar si la clave fue enviada
+        if (!empty($clave)) {
+            $claveEncriptada = password_hash($clave, PASSWORD_BCRYPT);
+        } else {
+            // Obtener la clave actual si no se cambió
+            $sqlClave = "SELECT Clave FROM t_usuarios WHERE Id_usuario = ?";
+            $stmtClave = $conn->prepare($sqlClave);
+            $stmtClave->bind_param("i", $id);
+            $stmtClave->execute();
+            $result = $stmtClave->get_result();
+            $row = $result->fetch_assoc();
+            $claveEncriptada = $row['Clave']; // Mantiene la clave actual
+        }
+    
+        // Actualizar datos
         $sql = "UPDATE t_usuarios SET Nombres = ?, Apellidos = ?, Clave = ?, Correo = ?, Rol = ? WHERE Id_usuario = ?";
-    
         $stmt = $conn->prepare($sql);
-    
+        
         if ($stmt === false) {
             return false;
         }
     
-        $stmt->bind_param("sssssi", $nombres, $apellidos, $clave, $correo, $rol, $id);
-    
+        $stmt->bind_param("sssssi", $nombres, $apellidos, $claveEncriptada, $correo, $rol, $id);
         $result = $stmt->execute();
-    
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
     
         $stmt->close();
         $conn->close();
-    }
+    
+        return $result;
+    }    
     
     public function obtenerUsuarioPorId($id) {
         $conn = Database::connect();

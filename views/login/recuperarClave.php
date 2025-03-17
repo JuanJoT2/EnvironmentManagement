@@ -1,8 +1,5 @@
-<?php	
-/*
-require_once ("../../models/RecuperarModel.php");
-require_once ("../../controllers/RecuperarController.php");
-*/
+<?php
+require_once __DIR__ . '/../../controllers/RecuperarController.php';
 ?>
 
 <!DOCTYPE html>
@@ -225,24 +222,28 @@ require_once ("../../controllers/RecuperarController.php");
 
 </head>
 <body>
-    <div class="container">
-        <div class="logo-container">
-            <img src="../assets/Logo-Sena.jpg" alt="Logo" class="logo">
-        </div>
-        <div class="login-box">
-            <h2>Recuperar Contraseña</h2>
-            <p>Ingrese su correo electrónico para recibir un enlace de recuperación de contraseña.</p>
-            <form action="/recuperar_clave" method="POST" id="form-recuperar">
-                <div class="textbox">
-                    <input type="email" id="correo" name="correo" placeholder="Correo" required>
+
+    <main>
+        <div class="container">
+            <div class="logo-container">
+                <img src="../assets/Logo-Sena.jpg" alt="Logo" class="logo">
+            </div>
+            <div class="login-box">
+                <h2>Recuperar Contraseña</h2>
+                <p>Ingrese su correo electrónico para recibir un enlace de recuperación de contraseña.</p>
+                <form id="form-recuperar">
+                    <div class="textbox">
+                        <input type="email" id="correo" name="correo" placeholder="Correo" required>
+                    </div>
+                    <button type="submit" class="btn" id="enviar">Enviar</button>
+                </form>
+
+                <div class="footer">
+                    <a href="/gestiondeambientes/login" class="d-block mt-3 text-success return">Volver al inicio de sesión</a>
                 </div>
-                <button type="submit" class="btn" id="enviar">Enviar</button>
-            </form>
-            <div class="footer">
-                <a href="/gestiondeambientes/login" class="d-block mt-3 text-success return">Volver al inicio de sesión</a>
             </div>
         </div>
-    </div>
+    </main>
 
     <div class="popup" id="creditPopup">
         <button class="popup-close" onclick="hidePopup()">X</button>
@@ -254,6 +255,33 @@ require_once ("../../controllers/RecuperarController.php");
             <li>Luis Enrique Arias</li>
         </ul>
     </div>
+
+    <!-- Recuperar Contraseña -->
+    <script>
+        document.getElementById("form-recuperar").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let correo = document.getElementById("correo").value;
+
+            fetch("controllers/RecuperarController.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "correo=" + encodeURIComponent(correo)
+            })
+            .then(response => response.json())  // 🚀 Cambio aquí
+            .then(data => {
+                console.log("Respuesta del servidor:", data);
+                if (data.success) {
+                    Swal.fire("Éxito", data.success, "success");
+                } else {
+                    Swal.fire("Error", data.error, "error");
+                }
+            })
+            .catch(error => {
+                console.error("Error en fetch:", error);
+                Swal.fire("Error", "Hubo un problema en el servidor", "error");
+            });
+        });
+    </script>
 
     <script>
         function showPopup() {

@@ -1,15 +1,36 @@
 <?php
-    // Conexión a la base de datos y sesión
+    // Conectamos la base de datos
     require_once 'config/db.php';
     $db = Database::connect();
+    
     session_start();
 
-    if (isset($_SESSION['clave'])) {
-        $clave = $_SESSION['clave'];
+    // Si la sesión no está activa, redirigir al login
+    if (!isset($_SESSION['aut']) || $_SESSION['aut'] !== "SI") {
+        session_unset();
+        session_destroy();
+        echo "<script>
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/gestiondeambientes/login';
+        </script>";
+        exit();
+    }
 
-        $query = "SELECT * FROM t_usuarios WHERE Clave = ?";
+    // Evitar caché del navegador
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+    // Comprobar si el usuario está autenticado
+    if (isset($_SESSION['email'])) {
+        $email = $_SESSION['email']; 
+
+        // Consultar datos del usuario usando el correo
+        $query = "SELECT Nombres, Apellidos, Rol FROM t_usuarios WHERE Correo = ?";
         $stmt = $db->prepare($query);
-        $stmt->bind_param("s", $clave);
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -28,6 +49,7 @@
         $nombre = "Nombre no proporcionado";
         $cargo = "Cargo no proporcionado";
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -138,10 +160,27 @@
             background-color: #f8f9fa;
             width: 100%;
             text-align: center;
-            padding: 2px 0;
+            padding: 20px 0;
             margin-top: auto;
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
         }
+
+        #btn_salir{
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .salir{
+            position: relative;
+            top: 20px;
+            bottom: 10px;
+            text-align: right;
+            right: 10px;
+        }
+
     </style>
 
 </head>
@@ -179,8 +218,8 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="logout-button">
-            <a href="/gestiondeambientes/login" class="btn btn-danger">Cerrar sesión</a>
+        <div class="salir">
+            <a href="../controllers/cerrarSesion.php" id="btn_salir" class="button-admin">Cerrar sesión</a>
         </div>
         <p>© 2025 Gestión de Ambientes de Formación - Todos los derechos reservados.</p>
     </footer>
@@ -233,6 +272,52 @@
                 document.getElementById('preview').style.display = 'none';
             }
         }
+    </script>
+
+    <!-- Script cerrar sesión -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".salir").addEventListener("click", function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Se cerrará tu sesión.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, cerrar sesión"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "../controllers/cerrarSesion.php";
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Destruir sesión -->
+    <script>
+        // Función para borrar historial y prevenir el acceso con "Atrás"
+        function bloquearHistorial() {
+            history.pushState(null, "", location.href);
+            window.onpopstate = function () {
+                history.pushState(null, "", location.href);
+            };
+        }
+
+        // Bloquear historial al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+            bloquearHistorial();
+
+            // Verificar si la sesión ha sido cerrada
+            if (!sessionStorage.getItem("autenticado")) {
+                window.location.href = "/gestiondeambientes/login";
+            }
+        });
+
+        // Guardar estado en sessionStorage al iniciar sesión
+        sessionStorage.setItem("autenticado", "SI");
     </script>
 
 </body>

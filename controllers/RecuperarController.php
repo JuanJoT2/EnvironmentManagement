@@ -1,77 +1,80 @@
-<?php
-require_once 'models/RecuperarModel.php';
+    <?php
+    require_once __DIR__ . '/../PHPMailer/PHPMailer.php';
+    require_once __DIR__ . '/../PHPMailer/SMTP.php';
+    require_once __DIR__ . '/../PHPMailer/Exception.php';
+    require_once __DIR__ . '/../models/sendEmail.php'; // Asegúrate de que la ruta sea correcta
 
-class RecuperarController {
-    private $recuperarModel;
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    use PHPMailer\PHPMailer\SMTP;
 
-    public function __construct() {
-        $this->recuperarModel = new RecuperarModel();
-    }
+    class RecuperarController {
+        private $recuperarModel;
 
-    // Muestra el formulario de recuperación de contraseña
-    public function mostrarFormulario() {
-        require_once 'views/login/recuperarClave.php';
-    }
+        public function __construct() {
+            $this->recuperarModel = new RecuperarModel();
+        }
 
-    // Envía el correo con el enlace de recuperación
-    public function enviarCorreo() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['correo'];
+        public function mostrarFormulario() {
+            require_once __DIR__ . '/../views/login/recuperarClave.php'; 
+        }
+
+        public function enviarCorreo() {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                header("HTTP/1.0 405 Method Not Allowed");
+                echo json_encode(["error" => "Método no permitido."]);
+                exit;
+            }
+        
+            if (!isset($_POST['correo']) || empty($_POST['correo'])) {
+                echo json_encode(["error" => "El campo de correo es obligatorio."]);
+                exit;
+            }
+        
+            $email = trim($_POST['correo']);
             $usuario = $this->recuperarModel->getUserByEmail($email);
-
-            if ($usuario) { 
-                // Generar un token único para la recuperación
-                $token = bin2hex(random_bytes(32)); // Un token de 64 caracteres
-                $this->recuperarModel->guardarToken($email, $token);
-
-                // Crear el enlace para restablecer la contraseña
-                $enlace = URL . "recuperar_clave/restablecer/" . $token;
-                $asunto = "Recuperación de contraseña";
-                $mensaje = "Hola, para restablecer tu contraseña, haz clic en el siguiente enlace: " . $enlace;
-                $cabeceras = "From: no-reply@tudominio.com\r\n";
-
-                if (mail($email, $asunto, $mensaje, $cabeceras)) {
-                    echo "Correo de recuperación enviado.";
-                } else {
-                    echo "Error al enviar el correo.";
+        
+            if ($usuario) {
+                $nuevaClave = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+                $hashedClave = password_hash($nuevaClave, PASSWORD_BCRYPT);
+                $this->recuperarModel->actualizarClave($email, $hashedClave);
+        
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'redsenaat@gmail.com';
+                    $mail->Password = 'eklkrrvvgsmjxazx';
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Port = 465;
+        
+                    $mail->setFrom('redsenaat@gmail.com', 'Soporte');
+                    $mail->addAddress($email);
+                    $mail->isHTML(true);
+                    $mail->CharSet = 'UTF-8';
+                    $mail->Subject = 'Nueva contraseña';
+                    $mail->Body = "<p>Hola,</p>
+                                <p>Tu nueva clave es: <strong>$nuevaClave</strong></p>
+                                <p>Por favor, inicia sesión y cámbiala cuanto antes.</p>";
+        
+                    $mail->send();
+                    echo json_encode(["success" => "Correo enviado correctamente."]);
+                    exit; 
+                } catch (Exception $e) {
+                    echo json_encode(["error" => "Error al enviar el correo: {$mail->ErrorInfo}"]);
+                    exit;
                 }
             } else {
-                echo "Correo no registrado.";
+                echo json_encode(["error" => "Correo no registrado."]);
+                exit;
             }
-        } else {
-            header("HTTP/1.0 405 Method Not Allowed");
-            echo "Método no permitido.";
-        }
+        }        
     }
 
-    // Restablecer la contraseña
-    public function restablecerClave($token) {
-        // Verificar si el token es válido
-        $usuario = $this->recuperarModel->verificarToken($token);
-
-        if ($usuario) {
-            // Mostrar el formulario para cambiar la contraseña
-            require_once 'views/login/cambiarClave.php';
-        } else {
-            echo "Token inválido o expirado.";
-        }
+    // **Ejecución del controlador**
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controlador = new RecuperarController();
+        $controlador->enviarCorreo();
     }
-
-    // Actualizar la contraseña
-    public function actualizarClave() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nuevaClave = $_POST['nuevaClave'];
-            $token = $_POST['token'];
-            $usuario = $this->recuperarModel->verificarToken($token);
-
-            if ($usuario) {
-                // Actualizar la contraseña en la base de datos
-                $this->recuperarModel->actualizarClave($usuario['Correo'], $nuevaClave);
-                echo "Contraseña actualizada exitosamente.";
-            } else {
-                echo "Token inválido o expirado.";
-            }
-        }
-    }
-}
-?>
+    ?>
