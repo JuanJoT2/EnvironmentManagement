@@ -134,7 +134,7 @@
                     confirmButtonText: "Sí, cerrar sesión"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../controllers/cerrarSesion.php";
+                        window.location.href = "../../controllers/cerrarSesion.php";
                     }
                 });
             });
@@ -186,7 +186,7 @@
                         title: 'Éxito',
                         text: 'El ambiente ha sido modificado exitosamente',
                         confirmButtonText: 'OK',
-                        confirmButtonClass: 'custom-btn-green' // Clase personalizada para el botón
+                        confirmButtonColor: "#39a900" 
                     }).then(() => {
                         window.location.href = '../ambientes';
                     });

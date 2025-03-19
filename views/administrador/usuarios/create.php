@@ -63,7 +63,7 @@
 
     <main class="container my-4">
         <section class="create-ambiente" id="section-create-usuario">
-            <form action="createAmbiente" method="POST">
+            <form action="createUsuario" method="POST">
                 <label for="nombres">Nombre del usuario:</label><br>
                 <input type="text" id="nombres" name="nombres" required><br><br>
 
@@ -74,7 +74,7 @@
                 <input type="text" id="correo" name="correo" required><br>
 
                 <label for="clave">Contraseña:</label><br>
-                <input type="text" id="clave" name="clave" readonly><br>
+                <input type="text" id="clave" name="clave" readonly required><br>
                 <button type="button" id="generarClave">Generar Contraseña</button>
                 <br><br>
 
@@ -105,11 +105,50 @@
     <!-- Generar clave -->
     <script>
         document.getElementById("generarClave").addEventListener("click", function() {
-            // Generar una contraseña aleatoria de 4 dígitos
             var claveGenerada = Math.floor(Math.random() * 10000).toString().padStart(4, "0");
-            
-            // Mostrar la contraseña en el campo de entrada
             document.getElementById("clave").value = claveGenerada;
+        });
+    </script>
+
+    <!-- Alerta -->
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();  
+
+            var formData = new FormData(this);
+
+            fetch('createUsuario', {  
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'El usuario ha sido creado exitosamente',
+                        confirmButtonColor: '#39a900'
+                    }).then(() => {
+                        window.location.href = '../usuarios';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error,
+                        confirmButtonColor: '#d33'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al procesar la solicitud',
+                    confirmButtonColor: '#d33'
+                });
+            });
         });
     </script>
 
@@ -128,7 +167,7 @@
                     confirmButtonText: "Sí, cerrar sesión"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../controllers/cerrarSesion.php";
+                        window.location.href = "../../controllers/cerrarSesion.php";
                     }
                 });
             });

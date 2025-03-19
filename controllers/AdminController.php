@@ -205,13 +205,13 @@ class AdminController {
             $adminModel = new AdminModel();
             $result = $adminModel->guardarTelevisor($marca, $modelo, $serial, $placaInventario, $id_ambiente, $checkTv, $observaciones);
 
-            // Enviar respuesta JSON dependiendo del resultado
+     
             if ($result) {
-                echo json_encode(['success' => true]);  // Respuesta de éxito en formato JSON
+                echo json_encode(['success' => true]); 
             } else {
-                echo json_encode(['success' => false, 'error' => 'No se pudo crear el Televisor.']);  // Respuesta de error en formato JSON
+                echo json_encode(['success' => false, 'error' => 'No se pudo crear el Televisor.']);  
             }
-            exit();  // Importante para evitar que se siga ejecutando el script
+            exit();
         }   else {
             include 'views/administrador/tvs/create.php';
         }

@@ -143,7 +143,7 @@
                     confirmButtonText: "Sí, cerrar sesión"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../controllers/cerrarSesion.php";
+                        window.location.href = "../../controllers/cerrarSesion.php";
                     }
                 });
             });

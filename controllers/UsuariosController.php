@@ -16,20 +16,18 @@ class UsuariosController {
             $correo = $_POST["correo"];
             $rol = $_POST["rol"];
             
-            // Generar contraseña aleatoria de 4 dígitos
-            $clave = str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
-
+            // Usar la contraseña del formulario si existe, de lo contrario generar una nueva
+            $clave = !empty($_POST["clave"]) ? $_POST["clave"] : str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+    
             $usuariosModel = new UsuariosModel();
             $result = $usuariosModel->guardarUsuario($nombres, $apellidos, $clave, $correo, $rol);
-
+    
             if ($result) {
-                // Redirigir al usuario a la lista de usuarios
-                header("Location: ../usuarios");
-                exit();
+                echo json_encode(["success" => true, "message" => "Usuario creado exitosamente"]);
             } else {
-                header("Location: index.php?error=Error al crear el usuario");
-                exit();
+                echo json_encode(["success" => false, "error" => "Error al crear el usuario"]);
             }
+            exit();
         } else {
             include 'views/administrador/usuarios/create.php';
         }

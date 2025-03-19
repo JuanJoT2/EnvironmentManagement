@@ -267,13 +267,23 @@ require_once __DIR__ . '/../../controllers/RecuperarController.php';
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: "correo=" + encodeURIComponent(correo)
             })
-            .then(response => response.json())  // 🚀 Cambio aquí
+            .then(response => response.json()) 
             .then(data => {
                 console.log("Respuesta del servidor:", data);
                 if (data.success) {
-                    Swal.fire("Éxito", data.success, "success");
+                    Swal.fire({
+                        title: "Éxito",
+                        text: data.success,
+                        icon: "success",
+                        confirmButtonColor: "#39a900" 
+                    });
                 } else {
-                    Swal.fire("Error", data.error, "error");
+                    Swal.fire({
+                        title: "Error",
+                        text: data.error,
+                        icon: "error",
+                        confirmButtonColor: "#d33" 
+                    });
                 }
             })
             .catch(error => {
@@ -283,6 +293,7 @@ require_once __DIR__ . '/../../controllers/RecuperarController.php';
         });
     </script>
 
+    <!-- Pop Up -->
     <script>
         function showPopup() {
             document.getElementById('creditPopup').style.display = 'block';

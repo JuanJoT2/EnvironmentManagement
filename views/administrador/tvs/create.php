@@ -140,7 +140,7 @@
                     confirmButtonText: "Sí, cerrar sesión"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../controllers/cerrarSesion.php";
+                        window.location.href = "../../controllers/cerrarSesion.php";
                     }
                 });
             });
@@ -174,16 +174,15 @@
     <!-- Alerta -->
     <script>
         document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault();  // Evita que el formulario se envíe de forma tradicional.
+            event.preventDefault();  
 
             var formData = new FormData(this);
 
-            // Enviar solicitud al servidor
-            fetch('createTvs', {  // Aquí se está enviando la solicitud al controlador
+            fetch('createTvs', {  
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())  // Esperar que la respuesta sea JSON
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     // Mostrar alerta de éxito
@@ -192,9 +191,9 @@
                         title: 'Éxito',
                         text: 'El Televisor ha sido creado exitosamente',
                         confirmButtonText: 'OK',
-                        confirmButtonClass: 'custom-btn-green'  // Clase personalizada para el botón
+                        confirmButtonClass: 'custom-btn-green'  
                     }).then(() => {
-                        window.location.href = '../tvs';  // Redirigir a la lista de computadores
+                        window.location.href = '../tvs';
                     });
                 } else {
                     // Mostrar alerta de error (si el servidor devuelve un error)
@@ -203,7 +202,7 @@
                         title: 'Error',
                         text: 'No se pudo crear el televisor. Por favor, intenta de nuevo',
                         confirmButtonText: 'OK',
-                        confirmButtonClass: 'custom-btn-green'  // Clase personalizada para el botón
+                        confirmButtonClass: 'custom-btn-green'
                     });
                 }
             })

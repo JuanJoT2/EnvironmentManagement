@@ -96,20 +96,6 @@
         </section>
     </main>
 
-    <!-- Generar clave -->
-    <script>
-        document.getElementById('mostrarClave').addEventListener('click', function() {
-            var claveInput = document.getElementById('clave');
-            if (claveInput.type === "password") {
-                claveInput.type = "text";
-                this.textContent = "Ocultar Clave";
-            } else {
-                claveInput.type = "password";
-                this.textContent = "Mostrar Clave";
-            }
-        });
-    </script>
-
     <footer id="footer">
         <div class="regresar">
             <?php
@@ -123,6 +109,20 @@
         <p class="mb-0 footerSize">© Copyright Gestión de ambientes Sena. All Rights Reserved<br>
         Designed by Sena</p>
     </footer>
+
+    <!-- Generar clave -->
+    <script>
+        document.getElementById('mostrarClave').addEventListener('click', function() {
+            var claveInput = document.getElementById('clave');
+            if (claveInput.type === "password") {
+                claveInput.type = "text";
+                this.textContent = "Ocultar Clave";
+            } else {
+                claveInput.type = "password";
+                this.textContent = "Mostrar Clave";
+            }
+        });
+    </script>
 
     <!-- Script cerrar sesión -->
     <script>
@@ -139,7 +139,7 @@
                     confirmButtonText: "Sí, cerrar sesión"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../controllers/cerrarSesion.php";
+                        window.location.href = "../../controllers/cerrarSesion.php";
                     }
                 });
             });

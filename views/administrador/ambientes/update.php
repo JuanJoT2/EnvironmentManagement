@@ -64,7 +64,7 @@
 
     <main class="container my-4">
         <section class="update-ambiente" id="section-update-ambiente">
-            <form action="../updateAmbiente/<?php echo $ambiente['Id_ambiente']; ?>" method="POST"> 
+            <form id="update-ambiente-form" action="../updateAmbiente/<?php echo $ambiente['Id_ambiente']; ?>" method="POST"> 
                 <label for="nombre">Nombre del Ambiente:</label><br>
                 <!-- Mostrar el valor del nombre del ambiente si está definido -->
                 <input type="text" id="nombre" name="nombre" value="<?php echo isset($ambiente['Nombre']) ? $ambiente['Nombre'] : ''; ?>" required><br><br>
@@ -112,7 +112,7 @@
                     confirmButtonText: "Sí, cerrar sesión"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../controllers/cerrarSesion.php";
+                        window.location.href = "../../controllers/cerrarSesion.php";
                     }
                 });
             });
@@ -163,8 +163,8 @@
                         icon: 'success',
                         title: 'Éxito',
                         text: 'El ambiente ha sido modificado exitosamente',
-                        confirmButtonText: 'OK',
-                        confirmButtonClass: 'custom-btn-green' // Clase personalizada para el botón
+                        confirmButtonText: 'Volver',
+                        confirmButtonColor: "#39a900" 
                     }).then(() => {
                         window.location.href = '../ambientes';
                     });
@@ -174,8 +174,8 @@
                         icon: 'error',
                         title: 'Error',
                         text: 'No se pudo modificar el ambiente. Por favor, intenta de nuevo',
-                        confirmButtonText: 'OK',
-                        confirmButtonClass: 'custom-btn-green' // Clase personalizada para el botón
+                        confirmButtonText: 'Reintentarlo',
+                        confirmButtonColor: "#d33" 
                     });
                 }
             })

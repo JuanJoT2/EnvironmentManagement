@@ -13,6 +13,7 @@ $router->run();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/environment.png">
 </head>
 <body>
     

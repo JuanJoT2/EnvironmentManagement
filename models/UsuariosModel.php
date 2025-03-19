@@ -7,20 +7,16 @@ class UsuariosModel{
     public function guardarUsuario($nombres, $apellidos, $clave, $correo, $rol) {
         $conn = Database::connect();
     
+        // Encriptar la clave con bcrypt
+        $claveHash = password_hash($clave, PASSWORD_BCRYPT);
+    
         $sql = "INSERT INTO t_usuarios (Nombres, Apellidos, Clave, Correo, Rol)
                 VALUES (?, ?, ?, ?, ?)";
     
         $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssss", $nombres, $apellidos, $claveHash, $correo, $rol);
     
-        $stmt->bind_param("sssss", $nombres, $apellidos, $clave, $correo, $rol);
-    
-        $result = $stmt->execute();
-    
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
+        return $stmt->execute();  // Retorna true o false
     }
     
     public function modificarUsuario($id, $nombres, $apellidos, $clave, $correo, $rol) {
