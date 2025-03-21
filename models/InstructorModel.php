@@ -44,7 +44,6 @@ class instructorModel {
     
         return $ambientes;
     }
-    
 }
 
 ?>

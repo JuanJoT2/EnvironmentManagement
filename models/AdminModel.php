@@ -136,6 +136,22 @@ include_once 'config/db.php';
             }
         }
 
+        public function obtenerTelevisorPorId($id) {
+            $conn = Database::connect();
+
+            $sql = "SELECT * FROM t_televisores WHERE Id_televisor = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+            } else {
+                return null;
+            }
+        }
+
         public function modificarTelevisor($id, $marca, $modelo, $serial, $placaInventario, $nuevoIdAmbiente, $checkTv, $observaciones) {
             $conn = Database::connect();
 
@@ -148,8 +164,11 @@ include_once 'config/db.php';
                 $verificarExistencia = $conn->query("SELECT Id_ambiente FROM t_ambientes WHERE Id_ambiente = '$nuevoIdAmbiente'");
                 if ($verificarExistencia->num_rows > 0 ) {
                     // Si el nuevo ID de ambiente existe, proceder con la actualización del televisor
-                    $sql = "UPDATE t_televisores SET Marca='$marca', Modelo='$modelo', Serial='$serial', PlacaInventario='$placaInventario', Id_ambiente='$nuevoIdAmbiente', CheckTv='$checkTv', Observaciones='$observaciones' WHERE Id_televisor='$id'";
-                    if ($conn->query($sql) === TRUE) {
+                    $sql = "UPDATE t_televisores SET Marca=?, Modelo=?, Serial=?, PlacaInventario=?, Id_ambiente=?, CheckTv=?, Observaciones=? WHERE Id_televisor=?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("ssssissi", $marca, $modelo, $serial, $placaInventario, $nuevoIdAmbiente, $checkTv, $observaciones, $id);
+
+                    if ($stmt->execute()) {
                         return true;
                     } else {
                         return false;
@@ -166,19 +185,6 @@ include_once 'config/db.php';
                 } else {
                     return false;
                 }
-            }
-        }
-
-        public function obtenerTelevisorPorId($id) {
-            $conn = Database::connect();
-
-            $sql = "SELECT * FROM t_televisores WHERE Id_televisor=$id";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
-            } else {
-                return null;
             }
         }
 

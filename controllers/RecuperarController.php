@@ -49,7 +49,7 @@
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                     $mail->Port = 465;
         
-                    $mail->setFrom('redsenaat@gmail.com', 'Soporte');
+                    $mail->setFrom('redsenaat@gmail.com', 'Soporte Gestion de Ambientes');
                     $mail->addAddress($email);
                     $mail->isHTML(true);
                     $mail->CharSet = 'UTF-8';
@@ -113,7 +113,7 @@
                                 <p>Has solicitado restablecer tu contraseña en Gestion de Ambientes. Aquí está tu nueva clave generada:</p>
                                 <p>Esta contraseña es provisional, por favor recuerda solicitar cambiarla con soporte.</p>
                                 <h1 class="password">' . $nuevaClave . '</h1>
-                                <a href="#" class="button">Iniciar Sesión</a>
+                                <a href="http://localhost/gestiondeambientes/login" class="button">Iniciar Sesión</a>
                                 <p>Si no solicitaste este cambio, por favor comunicate con soporte.</p>
                                 <p>Gracias,</p>
                                 <p>Gestion de ambientes</p>

@@ -31,7 +31,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel administrativo</title>
+    <title>Editar Tv</title>
     <link rel="stylesheet" type="text/css" href="../../assets/styles.css">
     
     <!-- Incluir SweetAlert2 -->
@@ -70,7 +70,7 @@
 
     <main class="container my-4">
         <section class="update-ambiente" id="section-update-ambiente">
-            <form action="../updateTvs/<?php echo $televisor['Id_televisor']; ?>" method?="POST">
+            <form action="../updateTvs/<?php echo $televisor['Id_televisor']; ?>" method="POST">
               
                 <label for="marca">Marca:</label><br>
                 <input type="text" id="marca" name="marca" value="<?php echo isset($televisor['Marca']) ? $televisor['Marca'] : ''; ?>"><br><br>

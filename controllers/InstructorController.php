@@ -44,9 +44,7 @@ class InstructorController {
             } else {
                 echo "No se encontró información relacionada para el código QR escaneado.";
             }
-        }
-        
-    
+        }    
     }
 
 ?>

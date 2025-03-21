@@ -9,4 +9,5 @@ class Database {
         return $db;
     }
 }
+
 ?>

@@ -218,46 +218,46 @@ class AdminController {
     }
 
     public function updateTvs($id) {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $marca = $_POST["marca"];
-            $modelo = $_POST["modelo"];
-            $serial = $_POST["serial"];
-            $placaInventario = $_POST["placaInventario"];
-            $nuevoIdAmbiente = isset($_POST["id_ambiente"]) ? $_POST["id_ambiente"] : null; // // Corregido para manejar el caso en que id_ambiente no esté definido
-            $checkTv = isset($_POST["checkTv"]) ? 1 : 0; 
-            $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : ''; // Corregido para manejar el caso en que observaciones no esté definido
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $marca = $_POST["marca"];
+                $modelo = $_POST["modelo"];
+                $serial = $_POST["serial"];
+                $placaInventario = $_POST["placaInventario"];
+                $nuevoIdAmbiente = isset($_POST["id_ambiente"]) ? $_POST["id_ambiente"] : null; // // Corregido para manejar el caso en que id_ambiente no esté definido
+                $checkTv = isset($_POST["checkTv"]) ? 1 : 0; 
+                $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : ''; // Corregido para manejar el caso en que observaciones no esté definido
 
-            $adminModel = new AdminModel();
-            $result = $adminModel->modificarTelevisor($id, $marca, $modelo, $serial, $placaInventario, $nuevoIdAmbiente, $checkTv, $observaciones);
+                $adminModel = new AdminModel();
+                $result = $adminModel->modificarTelevisor($id, $marca, $modelo, $serial, $placaInventario, $nuevoIdAmbiente, $checkTv, $observaciones);
 
-            if ($result) {
-                // Redirigir a la lista de computadores si la actualización fue exitosa
-                header("Location: ../tvs");
-                exit();
+                if ($result) {
+                    // Redirigir a la lista de computadores si la actualización fue exitosa
+                    header("Location: ../tvs");
+                    exit();
+                } else {
+                    // Manejar el caso en el que ocurra un error al actualizar el televisor
+                    header("Location: index.php?error=Error al actualizar el televisor&id=$id");
+                    exit();
+                }
             } else {
-                // Manejar el caso en el que ocurra un error al actualizar el televisor
-                header("Location: index.php?error=Error al actualizar el televisor&id=$id");
-                exit();
-            }
-        } else {
-            // Obtener los datos del televisor existente
-            $adminModel = new AdminModel();
-            $televisor = $adminModel->obtenerTelevisorPorId($id);
+                // Obtener los datos del televisor existente
+                $adminModel = new AdminModel();
+                $televisor = $adminModel->obtenerTelevisorPorId($id);
 
-            if ($televisor) {
-                // Obtener los datos del ambiente asociado al televisor
-                $idAmbiente = $televisor['Id_ambiente'];
-            
-                // Obtener los datos del ambiente
-                $ambiente = $adminModel->obtenerAmbientePorId($idAmbiente);
+                if ($televisor) {
+                    // Obtener los datos del ambiente asociado al televisor
+                    $idAmbiente = $televisor['Id_ambiente'];
+                
+                    // Obtener los datos del ambiente
+                    $ambiente = $adminModel->obtenerAmbientePorId($idAmbiente);
 
-                // Renderizar el formulario de actualización con los datos del televisor y del ambiente
-                include 'views/administrador/tvs/update.php';
-            } else {
-                // Manejar el caso en que el televisor no exista
-                echo "Error: El televisor especificado no existe.";
+                    // Renderizar el formulario de actualización con los datos del televisor y del ambiente
+                    include 'views/administrador/tvs/update.php';
+                } else {
+                    // Manejar el caso en que el televisor no exista
+                    echo "Error: El televisor especificado no existe.";
+                }
             }
-        }
     }
 
     // Apartado de controlador para Tableros
