@@ -350,18 +350,21 @@ class AdminController {
 
     public function enviarInforme() {
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["observacion"])) {
-            // Obtener los datos del formulario
             $observacion = $_POST["observacion"];
-            $id_usuario = $_SESSION["id_usuario"]; // Obtener el ID del usuario de la sesión
-            $id_ambiente = $_POST["id_ambiente"]; // Obtener el ID del ambiente del formulario
+            $id_usuario = $_SESSION["id_usuario"];
+            $id_ambiente = $_POST["id_ambiente"];
     
             // Llamar al método para agregar el informe en el modelo
-            $this->agregarReporte($observacion, $id_usuario, $id_ambiente);
-            // Redirigir al instructor a alguna página
-            header("Location: ../home");
+            $adminModel = new AdminModel();
+            $result = $adminModel->insertarReporte($observacion, $id_usuario, $id_ambiente);
+    
+            if ($result) {
+                header("Location: ../reportes");
+            } else {
+                echo "<script>alert('Error al agregar el reporte');</script>";
+            }
             exit();
         } else {
-            // Manejar el caso en que no se haya enviado un formulario POST
             echo "Error: Método de solicitud incorrecto.";
         }
     }
@@ -378,6 +381,16 @@ class AdminController {
             echo "<script>alert('Error al agregar el reporte');</script>";
             exit();
         }
+    }
+
+    // Historial de REPORTES
+
+    public function historial() {
+        include 'views/administrador/reportes/historial.php';
+    }
+
+    public function mostrarReporte() {
+
     }
 }
 

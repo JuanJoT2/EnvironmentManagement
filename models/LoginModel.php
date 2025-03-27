@@ -43,7 +43,7 @@ class LoginModel {
 
         if ($user && password_verify($clave, $user['Clave'])) {
             session_start();
-            $_SESSION['id'] = $user['Id_usuario'];
+            $_SESSION['id_usuario'] = $user['Id_usuario'];
             $_SESSION['email'] = $user['Correo'];
             $_SESSION['rol'] = $user['Rol'];
             $_SESSION['aut'] = "SI";

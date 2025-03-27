@@ -2,7 +2,7 @@
 
 // instructorModel.php
 
-include_once 'config/db.php';
+require(__DIR__ . '/../config/db.php');
 
 class instructorModel {
 
@@ -43,6 +43,28 @@ class instructorModel {
         }
     
         return $ambientes;
+    }
+
+    public function registrarIngreso($id_usuario, $id_ambiente) {
+        $conn = Database::connect();
+        $hora_ingreso = date("Y-m-d H:i:s");
+    
+        $sql = "INSERT INTO t_tiempos (Id_usuario, Id_ambiente, Hora_ingreso) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iis", $id_usuario, $id_ambiente, $hora_ingreso);
+        $stmt->execute();
+        $stmt->close();
+    }
+    
+    public function registrarSalida($id_usuario, $id_ambiente) {
+        $conn = Database::connect();
+        $hora_salida = date("Y-m-d H:i:s");
+    
+        $sql = "UPDATE t_tiempos SET Hora_salida = ? WHERE Id_usuario = ? AND Id_ambiente = ? AND Hora_salida IS NULL";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sii", $hora_salida, $id_usuario, $id_ambiente);
+        $stmt->execute();
+        $stmt->close();
     }
 }
 

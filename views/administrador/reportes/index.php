@@ -80,15 +80,6 @@
         </div>
     </nav>
 
-    <!-- <nav>
-        <div class="column-toggle-buttons">
-            <button class="toggle-vis" data-column="0">Instructor</button>
-            <button class="toggle-vis" data-column="1">Ambiente</button>
-            <button class="toggle-vis" data-column="2">Observaciones</button>
-            <button class="toggle-vis" data-column="3">Fecha y Hora</button>
-        </div>
-    </nav> -->
-
     <main class="container contenido">
         <section class="ambiente" id="section-ambiente">
             <div class="subtitulo-ambiente">
@@ -154,6 +145,7 @@
         <p>© 2025 Gestión de Ambientes de Formación - Todos los derechos reservados.</p>
     </footer>
 
+    <!-- Script dataTable -->
     <script>
         $(document).ready(function() {
             var table = $('#tabla-ambientes').DataTable({

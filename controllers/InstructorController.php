@@ -45,6 +45,16 @@ class InstructorController {
                 echo "No se encontró información relacionada para el código QR escaneado.";
             }
         }    
+
+        public function iniciarSesionAmbiente($id_usuario, $id_ambiente) {
+            $instructorModel = new InstructorModel();
+            $instructorModel->registrarIngreso($id_usuario, $id_ambiente);
+        }
+        
+        public function cerrarSesionAmbiente($id_usuario, $id_ambiente) {
+            $instructorModel = new InstructorModel();
+            $instructorModel->registrarSalida($id_usuario, $id_ambiente);
+        }        
     }
 
 ?>
