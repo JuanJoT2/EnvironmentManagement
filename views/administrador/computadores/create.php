@@ -225,18 +225,17 @@
                         title: 'Error',
                         text: 'No se pudo crear el computador. Por favor, intenta de nuevo',
                         confirmButtonText: 'OK',
-                        confirmButtonClass: 'custom-btn-green'  // Clase personalizada para el botón
+                        confirmButtonColor: '#d33'  // Clase personalizada para el botón
                     });
                 }
             })
             .catch(error => {
-                // Mostrar alerta de error de conexión (si ocurre un error al hacer el fetch)
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: 'Hubo un problema al procesar la solicitud. Por favor, intenta más tarde',
                     confirmButtonText: 'OK',
-                    confirmButtonClass: 'custom-btn-green'  // Clase personalizada para el botón
+                    confirmButtonColor: '#d33'
                 });
             });
         });

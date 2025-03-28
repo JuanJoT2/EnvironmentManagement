@@ -158,12 +158,42 @@ class AdminController {
             $result = $adminModel->modificarComputador($id, $tipo, $marca, $modelo, $serial, $placaInventario, $nuevoIdAmbiente, $checkPc, $hardware, $software, $observaciones);
 
             if ($result) {
-                // Redirigir a la lista de computadores si la actualización fue exitosa
-                header("Location: ../computadores");
+                // Si la actualización fue exitosa
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'El computador se ha actualizado correctamente.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: '#39a900'
+                        }).then(() => {
+                            window.location.href = '../computadores';
+                        });
+                    });
+                </script>";
                 exit();
             } else {
-                // Manejar el caso en que ocurra un error al actualizar el computador
-                header("Location: index.php?error=Error al actualizar el computador&id=$id");
+                // Si hay un error en la actualización
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al actualizar el computador.',
+                            icon: 'error',
+                            confirmButtonText: 'Intentar de nuevo',
+                            confirmButtonColor: '#d33'
+                        }).then(() => {
+                            window.location.href = './$id';
+                        });
+                    });
+                </script>";
                 exit();
             }
         } else {
@@ -183,6 +213,7 @@ class AdminController {
             } else {
                 // Manejar el caso en que el computador no existe
                 echo "Error: El computador especificado no existe.";
+                exit();
             }
         }
     }
@@ -393,7 +424,4 @@ class AdminController {
 
     }
 }
-
-
-
 ?>

@@ -46,8 +46,5 @@ class EncargadoController {
         include 'views/encargado/viewReportes/index.php';
     }
     
-    }
-
-    
-
+}
 ?>
