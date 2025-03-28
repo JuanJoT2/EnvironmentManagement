@@ -49,12 +49,27 @@ class instructorModel {
         $conn = Database::connect();
         $hora_ingreso = date("Y-m-d H:i:s");
     
+        error_log("Intentando registrar ingreso: Usuario $id_usuario, Ambiente $id_ambiente, Hora: $hora_ingreso");
+    
         $sql = "INSERT INTO t_tiempos (Id_usuario, Id_ambiente, Hora_ingreso) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
+        
+        if ($stmt === false) {
+            error_log("Error en la preparación de la consulta: " . $conn->error);
+            return false;
+        }
+    
         $stmt->bind_param("iis", $id_usuario, $id_ambiente, $hora_ingreso);
         $stmt->execute();
+    
+        if ($stmt->affected_rows > 0) {
+            error_log("Ingreso registrado correctamente.");
+        } else {
+            error_log("Error al registrar el ingreso.");
+        }
+    
         $stmt->close();
-    }
+    }       
     
     public function registrarSalida($id_usuario, $id_ambiente) {
         $conn = Database::connect();

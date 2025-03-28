@@ -46,15 +46,24 @@ class InstructorController {
             }
         }    
 
-        public function iniciarSesionAmbiente($id_usuario, $id_ambiente) {
+        public function iniciarSesionAmbiente() {
+            $data = json_decode(file_get_contents("php://input"), true);
+            $id_usuario = $data['id_usuario'];
+            $id_ambiente = $data['id_ambiente'];
+        
             $instructorModel = new InstructorModel();
             $instructorModel->registrarIngreso($id_usuario, $id_ambiente);
         }
         
-        public function cerrarSesionAmbiente($id_usuario, $id_ambiente) {
+        public function cerrarSesionAmbiente() {
+            $data = json_decode(file_get_contents("php://input"), true);
+            $id_usuario = $data['id_usuario'];
+            $id_ambiente = $data['id_ambiente'];
+        
             $instructorModel = new InstructorModel();
             $instructorModel->registrarSalida($id_usuario, $id_ambiente);
-        }        
+        }
+             
     }
 
 ?>

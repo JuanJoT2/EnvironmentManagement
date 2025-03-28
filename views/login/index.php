@@ -20,7 +20,6 @@
     }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -122,6 +121,7 @@
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
+            margin-top: 20px !important;
         }
 
         #creditos:hover{
