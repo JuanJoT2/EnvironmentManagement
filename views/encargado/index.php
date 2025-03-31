@@ -1,35 +1,55 @@
 <?php
-require_once 'config/db.php';
-$db = Database::connect();
-session_start();
+    // Conectamos la base de datos
+    require_once 'config/db.php';
+    $db = Database::connect();
+    
+    session_start();
 
-$clave = $_SESSION['clave'];
+    // Si la sesión no está activa, redirigir al login
+    if (!isset($_SESSION['aut']) || $_SESSION['aut'] !== "SI") {
+        session_unset();
+        session_destroy();
+        echo "<script>
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/gestiondeambientes/login';
+        </script>";
+        exit();
+    }
 
-// Preparar la consulta SQL
-$query = "SELECT * FROM t_usuarios WHERE Clave = ?";
-$stmt = $db->prepare($query);
+    // Evitar caché del navegador
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    header("Expires: 0");
 
-// Vincular parámetros y ejecutar la consulta
-$stmt->bind_param("s", $clave);
-$stmt->execute();
+    // Comprobar si el usuario está autenticado
+    if (isset($_SESSION['email'])) {
+        $email = $_SESSION['email']; 
 
-// Obtener el resultado de la consulta
-$result = $stmt->get_result();
+        // Consultar datos del usuario usando el correo
+        $query = "SELECT Nombres, Apellidos, Rol FROM t_usuarios WHERE Correo = ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-if($result->num_rows === 0) {
-    // No se encontraron registros para la clave dada
-    $nombre = "Nombre no encontrado";
-    $cargo = "Cargo no encontrado";
-} else {
-    // Obtener el nombre y el cargo del resultado de la consulta
-    $row = $result->fetch_assoc();
-    $nombre = $row['Nombres'] . ' ' . $row['Apellidos'];
-    $cargo = $row['Rol'];
-}
+        if ($result->num_rows === 0) {
+            $nombre = "Nombre no encontrado";
+            $cargo = "Cargo no encontrado";
+        } else {
+            $row = $result->fetch_assoc();
+            $nombre = $row['Nombres'] . ' ' . $row['Apellidos'];
+            $cargo = $row['Rol'];
+        }
 
-// Cerrar la declaración y la conexión a la base de datos
-$stmt->close();
-$db->close();
+        $stmt->close();
+        $db->close();
+    } else {
+        $nombre = "Nombre no proporcionado";
+        $cargo = "Cargo no proporcionado";
+    }
+
 ?>
 
 
@@ -40,6 +60,7 @@ $db->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lector de Código QR</title>
     <link rel="stylesheet" href="../assets/qrcode.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -118,7 +139,9 @@ $db->close();
         }
     </style>
 </head>
+
 <body>
+    
     <div class="cabeza">
         <img src='../assets/Logo-Sena.jpg' alt='logo'>
         <h1>Gestión de Ambientes de Formación</h1>

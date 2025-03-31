@@ -67,10 +67,42 @@ class AdminController {
             $result = $adminModel->modificarAmbiente($id, $nombre, $torre, $observaciones);
 
             if ($result) {
-                header("Location: ../ambientes");
+                // Si la actualización fue exitosa
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'El ambiente se ha actualizado correctamente.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: '#39a900'
+                        }).then(() => {
+                            window.location.href = '../ambientes';
+                        });
+                    });
+                </script>";
                 exit();
             } else {
-                header("Location: index.php?error=Error al actualizar el ambiente&id=$id");
+                // Si hay un error en la actualización 
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al actualizar el ambiente.',
+                            icon: 'error',
+                            confirmButtonText: 'Intentar de nuevo',
+                            confirmButtonColor: '#d33'
+                        }).then(() => {
+                            window.location.href = './$id';
+                        });
+                    });
+                </script>";
                 exit();
             }
         } else {
@@ -262,12 +294,42 @@ class AdminController {
                 $result = $adminModel->modificarTelevisor($id, $marca, $modelo, $serial, $placaInventario, $nuevoIdAmbiente, $checkTv, $observaciones);
 
                 if ($result) {
-                    // Redirigir a la lista de computadores si la actualización fue exitosa
-                    header("Location: ../tvs");
+                    // Si la actualización fue exitosa
+                    echo "
+                    <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                title: '¡Éxito!',
+                                text: 'El televisor se ha actualizado correctamente.',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor: '#39a900'
+                            }).then(() => {
+                                window.location.href = '../tvs';
+                            });
+                        });
+                    </script>";
                     exit();
                 } else {
-                    // Manejar el caso en el que ocurra un error al actualizar el televisor
-                    header("Location: index.php?error=Error al actualizar el televisor&id=$id");
+                    // Si hay un error en la actualización
+                    echo "
+                    <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Error al actualizar el televisor.',
+                                icon: 'error',
+                                confirmButtonText: 'Intentar de nuevo',
+                                confirmButtonColor: '#d33'
+                            }).then(() => {
+                                window.location.href = './$id';
+                            });
+                        });
+                    </script>";
                     exit();
                 }
             } else {
@@ -332,12 +394,42 @@ class AdminController {
             $result = $adminModel->modificarTablero($id, $marca, $placaInventario, $nuevoIdAmbiente, $checkTablero, $observaciones);
 
             if ($result) {
-                // Redirigir a la lista del tablero si la actualización fue exitosa
-                header("Location: ../tableros");
+                // Si la actualización fue exitosa
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'El tablero se ha actualizado correctamente.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: '#39a900'
+                        }).then(() => {
+                            window.location.href = '../tableros';
+                        });
+                    });
+                </script>";
                 exit();
             } else {
-                // Manejar el caso en que ocurra un error al actualizar el tablero
-                header("Location: index.php?error=Error al actualizar el tablero&id=$id");
+                // Si hay un error en la actualización
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al actualizar el tablero.',
+                            icon: 'error',
+                            confirmButtonText: 'Intentar de nuevo',
+                            confirmButtonColor: '#d33'
+                        }).then(() => {
+                            window.location.href = './$id';
+                        });
+                    });
+                </script>";
                 exit();
             }
         } else {

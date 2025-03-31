@@ -46,10 +46,42 @@ class UsuariosController {
             $result = $usuariosModel->modificarUsuario($id, $nombres, $apellidos, $clave, $correo, $rol);
     
             if ($result) {
-                header("Location: ../usuarios?success=true");
+                // Si la actualización fue exitosa
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'El usuario se ha actualizado correctamente.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: '#39a900'
+                        }).then(() => {
+                            window.location.href = '../usuarios';
+                        });
+                    });
+                </script>";
                 exit();
             } else {
-                header("Location: index.php?error=Error al actualizar el usuario&id=$id");
+                // Si hay un error en la actualización
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al actualizar el usuario.',
+                            icon: 'error',
+                            confirmButtonText: 'Intentar de nuevo',
+                            confirmButtonColor: '#d33'
+                        }).then(() => {
+                            window.location.href = './$id';
+                        });
+                    });
+                </script>";
                 exit();
             }
         } else {
