@@ -1,7 +1,8 @@
 <?php
-// Conectar a la base de datos
+
 require_once 'config/db.php';
 $db = Database::connect();
+
 ?>
 
 <!DOCTYPE html>

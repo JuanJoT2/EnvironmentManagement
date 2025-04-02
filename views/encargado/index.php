@@ -52,7 +52,6 @@
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -189,6 +188,7 @@
         <img src='../assets/Logo-Sena.jpg' alt='logo'>
         <h1>Gestión de Ambientes de Formación</h1>
     </header>
+    
     <main class="d-flex justify-content-center align-items-center">
         <div class="contenedor-centrado">
             <h3 class="escan">Escanea</h3>

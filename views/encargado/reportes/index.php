@@ -294,9 +294,9 @@
     </main>
 
     <footer id="footer">
-    <a href="../controllers/cerrarSesion.php" class="btn btn-danger mb-2 logout">Cerrar sesión</a>
-    <p>© Gestión de ambientes Sena. All Rights Reserved</p>
-    <p>Designed by Sena</p>
+        <a href="../controllers/cerrarSesion.php" class="btn btn-danger mb-2 logout">Cerrar sesión</a>
+        <p>© Gestión de ambientes Sena. All Rights Reserved</p>
+        <p>Designed by Sena</p>
     </footer>
 
     <!-- Script para el footer -->

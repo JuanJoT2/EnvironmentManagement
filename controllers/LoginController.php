@@ -18,13 +18,16 @@ class LoginController {
             $password = $_POST['password'];
 
             if ($this->loginModel->login($email, $password)) {
+
+                $rol = $_SESSION['rol'];
+
                 echo "
                 <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
                 <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         Swal.fire({
-                            title: '¡Bienvenido!',
+                            title: '¡Bienvenido $rol!',
                             text: 'Inicio de sesión exitoso.',
                             icon: 'success',
                             confirmButtonText: 'Continuar',
