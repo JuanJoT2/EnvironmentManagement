@@ -75,12 +75,28 @@ class instructorModel {
         $conn = Database::connect();
         $hora_salida = date("Y-m-d H:i:s");
     
-        $sql = "UPDATE t_tiempos SET Hora_salida = ? WHERE Id_usuario = ? AND Id_ambiente = ? AND Hora_salida IS NULL";
+        // Calcular el tiempo transcurrido
+        $sql = "SELECT Hora_ingreso FROM t_tiempos WHERE Id_usuario = ? AND Id_ambiente = ? AND Hora_salida IS NULL";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sii", $hora_salida, $id_usuario, $id_ambiente);
+        $stmt->bind_param("ii", $id_usuario, $id_ambiente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($row = $result->fetch_assoc()) {
+            $hora_ingreso = new DateTime($row['Hora_ingreso']);
+            $hora_salida = new DateTime($hora_salida);
+            $interval = $hora_ingreso->diff($hora_salida);
+            $tiempo_transcurrido = $interval->format('%H:%I:%S'); // Tiempo en formato hh:mm:ss
+        }
+    
+        // Actualizar hora de salida y el tiempo transcurrido
+        $sql = "UPDATE t_tiempos SET Hora_salida = ?, Tiempo_transcurrido = ? WHERE Id_usuario = ? AND Id_ambiente = ? AND Hora_salida IS NULL";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssii", $hora_salida, $tiempo_transcurrido, $id_usuario, $id_ambiente);
         $stmt->execute();
         $stmt->close();
     }
+    
 }
 
 ?>

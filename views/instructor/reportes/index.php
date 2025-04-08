@@ -492,6 +492,15 @@
                 .catch(error => console.error('Error al cerrar tiempo:', error));
             }
 
+            window.addEventListener("beforeunload", function () {
+                let elapsedTime = Math.floor((Date.now() - startTime) / 1000); // En segundos
+
+                // Asegurarse de que el tiempo sea enviado a la base de datos
+                navigator.sendBeacon('/gestiondeambientes/reportes.php', 
+                    new URLSearchParams({ tiempo_sesion: elapsedTime })
+                );
+            });
+
         </script>
 
         <!-- Registrar tiempo -->

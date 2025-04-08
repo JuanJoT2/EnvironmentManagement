@@ -47,7 +47,7 @@ $db = Database::connect();
         </div>
     </header>
     <nav>
-    <div class="column-toggle-buttons">
+    <div clx|ass="column-toggle-buttons">
             <button class="toggle-vis" data-column="0">Instructor</button>
             <button class="toggle-vis" data-column="1">Ambiente</button>
             <button class="toggle-vis" data-column="2">Observaciones</button>
@@ -112,9 +112,11 @@ $db = Database::connect();
             <button id="btn_salir">Salir</button>
         </div>
     </section>
+
     <footer>
         <p>Sena todos los derechos reservados</p>
     </footer>
+
     <script>
         $(document).ready(function() {
             var table = $('#tabla-ambientes').DataTable({
