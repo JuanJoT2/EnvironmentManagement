@@ -48,6 +48,13 @@ El proyecto "Gestión de Ambientes" tiene como objetivo principal facilitar a lo
 - **JavaScript**: Utilizado para la lógica y funcionalidades interactivas en el lado del cliente.
 - **PHP**: Utilizado para la lógica del servidor y la comunicación con la base de datos.
 
+## Librerias
+
+- **Boostrap**: Utilizado para el diseño responsive, utilidades y estilo.
+- **SweetAlert2**: Utilizado para las alertas amigables con el usuario.
+- **DataTable**: Utilizado para la captura de información.
+- **PHPMailer**: Utilizado para recuperar contraseña para el usuario.
+
 ### Base de Datos
 
 - **MySQL**: Utilizado como sistema de gestión de bases de datos para almacenar la información sobre los insumos, usuarios y otros datos relevantes del sistema.
