@@ -18,66 +18,61 @@ class LoginModel {
             $stmt->close();
             return $user;
         } else {
-            // Depuración
-            echo "Error en la preparación de la consulta: " . $this->db->error;
+            echo "Error en la consulta: " . $this->db->error;
             return null;
         }
     }
 
+    public function registerUser($email, $password, $role) {
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $stmt = $this->db->prepare("INSERT INTO t_usuarios (Correo, Clave, Rol) VALUES (?, ?, ?)");
+        
+        if ($stmt) {
+            $stmt->bind_param('sss', $email, $hashedPassword, $role);
+            $success = $stmt->execute();
+            $stmt->close();
+            return $success;
+        } else {
+            echo "Error al registrar usuario: " . $this->db->error;
+            return false;
+        }
+    }
+
     public function login($email, $clave) {
-        // Obtener usuario por email
         $user = $this->getUserByEmail($email);
 
-        if ($user) {
-            // Verificar la contraseña
-            if (password_verify($clave, $user['Clave'])) {
-                // Iniciar sesión
-                session_start();
-                $_SESSION['id'] = $user['Id_usuario'];
-                $_SESSION['email'] = $user['Correo'];
-                $_SESSION['rol'] = $user['Rol'];
-                $_SESSION['aut'] = "SI";
+        if ($user && password_verify($clave, $user['Clave'])) {
+            session_start();
+            $_SESSION['id_usuario'] = $user['Id_usuario'];
+            $_SESSION['email'] = $user['Correo'];
+            $_SESSION['rol'] = $user['Rol'];
+            $_SESSION['aut'] = "SI";
 
-                // Establecer mensaje de éxito
-                $_SESSION['alert'] = [
-                    'title' => 'Bienvenido ' . ucfirst($user['Rol']),
-                    'text' => 'Has ingresado correctamente',
-                    'icon' => 'success',
-                    'redirect' => $this->getRedirectUrlByRole($user['Rol'])
-                ];
-            } else {
-                // Establecer mensaje de error para clave incorrecta
-                $_SESSION['alert'] = [
-                    'title' => 'Error',
-                    'text' => 'La clave es incorrecta',
-                    'icon' => 'error',
-                    'redirect' => '../Views/extras/iniciarSesion.php'
-                ];
-            }
+            $_SESSION['alert'] = [
+                'title' => 'Bienvenido ' . ucfirst($user['Rol']),
+                'text' => 'Has ingresado correctamente',
+                'icon' => 'success',
+                'redirect' => $this->getRedirectUrlByRole($user['Rol'])
+            ];
+            return true;
         } else {
-            // Establecer mensaje de error para email no encontrado
             $_SESSION['alert'] = [
                 'title' => 'Error',
-                'text' => 'El email no existe en la base de datos. Regístrese',
-                'icon' => 'warning',
+                'text' => 'Correo o clave incorrecta',
+                'icon' => 'error',
                 'redirect' => '../Views/extras/iniciarSesion.php'
             ];
+            return false;
         }
     }
 
     private function getRedirectUrlByRole($role) {
-        switch ($role) {
-            case 'instructor':
-                return '../Views/instructor/index.php';
-            case 'coordinadorAcademico':
-                return '../Views/coordinador/index.php';
-            case 'coordinadorFormacion':
-                return '../Views/coordinador/index.php';
-            case 'bienestar':
-                return '../Views/Bienestar/index.php';
-            default:
-                return '../Views/extras/iniciarSesion.php';
-        }
+        $routes = [
+            'Administrador' => BASE_URL . 'admin/home',
+            'Instructor' => BASE_URL . 'instructor/home',
+            'Encargado' => BASE_URL . 'encargado/home'
+        ];
+        return $routes[$role] ?? BASE_URL . 'login';
     }
 }
 ?>

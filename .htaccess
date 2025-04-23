@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Si el proyecto está en una subcarpeta en producción
+RewriteBase /
+
+# Redirigir todas las solicitudes no existentes a index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

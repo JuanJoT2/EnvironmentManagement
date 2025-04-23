@@ -52,6 +52,9 @@ class encargadoModel {
         return $ambientes;
     }
 
+    
+    
+    
 }
 
 ?>

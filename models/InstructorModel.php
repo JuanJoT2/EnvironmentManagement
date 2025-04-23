@@ -2,7 +2,7 @@
 
 // instructorModel.php
 
-include_once 'config/db.php';
+require(__DIR__ . '/../config/db.php');
 
 class instructorModel {
 
@@ -14,46 +14,88 @@ class instructorModel {
                        t_computadores.Marca as MarcaComputador, 
                        t_computadores.Modelo as ModeloComputador
                 FROM t_ambientes
-                INNER JOIN t_computadores ON t_ambientes.Id_Ambiente = t_computadores.Id_Ambiente
+                LEFT JOIN t_computadores ON t_ambientes.Id_Ambiente = t_computadores.Id_Ambiente
                 WHERE t_ambientes.id_ambiente = '$qr_content'";
-        
+    
         $result = $conn->query($sql);
-        
-        // Verificar si la consulta SQL fue exitosa
+    
         if (!$result) {
             die("Error en la consulta SQL: " . $conn->error);
         }
-        
-        $ambientes = []; // Array para almacenar los ambientes con sus respectivos computadores
-        
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                // Crear un array asociativo para cada ambiente con sus datos
-                $ambiente = [
-                    'Nombre' => $row['Nombre'],
-                    'SerialComputador' => $row['SerialComputador'],
-                    'MarcaComputador' => $row['MarcaComputador'],
-                    'ModeloComputador' => $row['ModeloComputador'],
-                    'CheckPc' => $row['CheckPcs'],
-                    'Tvs' => $row['Tvs'],
-                    'Sillas' => $row['Sillas'],
-                    'Mesas' => $row['Mesas'],
-                    'Tableros' => $row['Tableros'],
-                    'Nineras' => $row['Nineras'],
-                    'CheckInfraestructura' => $row['CheckInfraestructura'],
-                    'Observaciones' => $row['Observaciones']
-                ];
     
-                // Agregar el ambiente al array de ambientes
-                $ambientes[] = $ambiente;
-            }
+        $ambientes = [];
+    
+        while ($row = $result->fetch_assoc()) {
+            $ambientes[] = [
+                'Nombre' => $row['Nombre'],
+                'SerialComputador' => $row['SerialComputador'] ?? null,
+                'MarcaComputador' => $row['MarcaComputador'] ?? null,
+                'ModeloComputador' => $row['ModeloComputador'] ?? null,
+                'CheckPc' => $row['CheckPcs'] ?? null,
+                'Tvs' => $row['Tvs'],
+                'Sillas' => $row['Sillas'],
+                'Mesas' => $row['Mesas'],
+                'Tableros' => $row['Tableros'],
+                'Nineras' => $row['Nineras'],
+                'CheckInfraestructura' => $row['CheckInfraestructura'],
+                'Observaciones' => $row['Observaciones']
+            ];
         }
     
         return $ambientes;
     }
 
+    public function registrarIngreso($id_usuario, $id_ambiente) {
+        $conn = Database::connect();
+        $hora_ingreso = date("Y-m-d H:i:s");
     
+        error_log("Intentando registrar ingreso: Usuario $id_usuario, Ambiente $id_ambiente, Hora: $hora_ingreso");
     
+        $sql = "INSERT INTO t_tiempos (Id_usuario, Id_ambiente, Hora_ingreso) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        
+        if ($stmt === false) {
+            error_log("Error en la preparación de la consulta: " . $conn->error);
+            return false;
+        }
+    
+        $stmt->bind_param("iis", $id_usuario, $id_ambiente, $hora_ingreso);
+        $stmt->execute();
+    
+        if ($stmt->affected_rows > 0) {
+            error_log("Ingreso registrado correctamente.");
+        } else {
+            error_log("Error al registrar el ingreso.");
+        }
+    
+        $stmt->close();
+    }       
+    
+    public function registrarSalida($id_usuario, $id_ambiente) {
+        $conn = Database::connect();
+        $hora_salida = date("Y-m-d H:i:s");
+    
+        // Calcular el tiempo transcurrido
+        $sql = "SELECT Hora_ingreso FROM t_tiempos WHERE Id_usuario = ? AND Id_ambiente = ? AND Hora_salida IS NULL";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $id_usuario, $id_ambiente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($row = $result->fetch_assoc()) {
+            $hora_ingreso = new DateTime($row['Hora_ingreso']);
+            $hora_salida = new DateTime($hora_salida);
+            $interval = $hora_ingreso->diff($hora_salida);
+            $tiempo_transcurrido = $interval->format('%H:%I:%S'); // Tiempo en formato hh:mm:ss
+        }
+    
+        // Actualizar hora de salida y el tiempo transcurrido
+        $sql = "UPDATE t_tiempos SET Hora_salida = ?, Tiempo_transcurrido = ? WHERE Id_usuario = ? AND Id_ambiente = ? AND Hora_salida IS NULL";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssii", $hora_salida, $tiempo_transcurrido, $id_usuario, $id_ambiente);
+        $stmt->execute();
+        $stmt->close();
+    }
     
 }
 

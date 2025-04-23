@@ -1,20 +1,96 @@
 <?php
-    // Conectar a la base de datos
-    require_once 'config/db.php';
-    $db = Database::connect();
+// PRIMERA LÍNEA ABSOLUTA DEL ARCHIVO (sin espacios/saltos antes)
+declare(strict_types=1);
+
+// 1. Verificación de carga duplicada (SOLUCIÓN DEFINITIVA)
+if (isset($GLOBALS['AMBIENTES_CARGADO'])) {
+    exit('Error: El archivo ya fue cargado');
+}
+$GLOBALS['AMBIENTES_CARGADO'] = true;
+
+// 2. Buffer de salida
+ob_start();
+
+// 3. Conexión a la base de datos
+require_once 'config/db.php';
+$db = Database::connect();
+
+// 4. Manejo de sesión seguro
+session_start();
+
+// 5. Verificación de autenticación
+if (!isset($_SESSION['aut']) || $_SESSION['aut'] !== "SI") {
+    session_unset();
+    session_destroy();
+    ob_clean();
+    echo "<script>
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location.href = '/gestiondeambientes/login';
+    </script>";
+    exit();
+}
+
+// 6. Cabeceras de control de caché
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// [El resto de tu código PHP continúa aquí...]
+// Evitar caché del navegador
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Verificamos si ya se hizo la acción
+if (isset($_GET['accion']) && isset($_GET['id'])) {
+    $id_ambiente = $_GET['id'];
+    $accion = $_GET['accion'];
+
+    // Verificar que la acción sea habilitar o inhabilitar
+    if ($accion === 'habilitar' || $accion === 'inhabilitar') {
+        $estado = ($accion === 'habilitar') ? 'Habilitado' : 'Inhabilitado';
+
+        // Evitar que la acción se repita
+        if (!isset($_SESSION['accion_realizada']) || $_SESSION['accion_realizada'] !== "$accion-$id_ambiente") {
+            $_SESSION['accion_realizada'] = "$accion-$id_ambiente"; // Guardamos la acción realizada
+
+            // Actualizar el estado en la base de datos
+            $query = "UPDATE t_ambientes SET Estado = ? WHERE Id_ambiente = ?";
+            $stmt = $db->prepare($query);
+            $stmt->bind_param('si', $estado, $id_ambiente);
+
+            if ($stmt->execute()) {
+                // Redirigir para evitar duplicación
+                header("Location: /gestiondeambientes/ambientes");
+                exit();
+            } else {
+                echo "<script>alert('Error al actualizar el estado del ambiente');</script>";
+            }
+        } else {
+            // Si ya se ha realizado la acción, redirigir sin cambios
+            header("Location: /gestiondeambientes/ambientes");
+            exit();
+        }
+    }
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrativo</title>
+    <title>Ambientes</title>
     <link rel="stylesheet" type="text/css" href="../assets/styles.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -23,13 +99,12 @@
 </head>
 
 <body>
-    
     <header class="container ambiNav">
         <div class="logo-container">
             <img src="../assets/Logo-Sena.jpg" alt="Logo de la empresa" class="logo">
         </div>
         <div class="title">
-            <h1>Gestion de Ambientes de formacion</h1>
+            <h1>Gestión de Ambientes de Formación</h1>
         </div>
         <div class="datetime">
             <?php
@@ -48,7 +123,7 @@
         </div>
     </header>
 
-    <nav class ="container aspects">
+    <nav class="container aspects">
         <div class="container">
             <button class="toggle-vis indicators" data-column="0">Id</button>
             <button class="toggle-vis indicators" data-column="1">Nombre</button>
@@ -59,17 +134,15 @@
             <button class="toggle-vis indicators" data-column="6">Mesas</button>
             <button class="toggle-vis indicators" data-column="7">Tableros</button>
             <button class="toggle-vis indicators" data-column="8">Niñeras</button>
-            <button class="toggle-vis indicators" data-column="9">Accion</button>
+            <button class="toggle-vis indicators" data-column="9">Acción</button>
         </div>
     </nav>
 
-    <main>
+    <main class="container contenido">
         <section class="ambiente" id="section-ambiente">
-
             <div class="subtitulo-ambiente">
                 <h2>Ambientes</h2>
             </div>
-
             <div class="descripcion-ambiente">
                 <p>Gestión de ambientes de formación</p>
             </div>
@@ -78,26 +151,21 @@
                 <table class="table table-striped table_id" border="1" id="tabla-ambientes">
                     <thead class="aspects">
                         <tr class="indicadores">
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Torre</th>
-                        <th>Computadores</th>
-                        <th>Tvs</th>
-                        <th>Sillas</th>
-                        <th>Mesas</th>
-                        <th>Tableros</th>
-                        <th>Niñeras</th>
-                        <th>Acción</th>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Torre</th>
+                            <th>Computadores</th>
+                            <th>Tvs</th>
+                            <th>Sillas</th>
+                            <th>Mesas</th>
+                            <th>Tableros</th>
+                            <th>Niñeras</th>
+                            <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $query = "SELECT * FROM t_ambientes";
-
-                        if (!empty($filtros)) {
-                            $query .= " WHERE " . implode(" AND ", $filtros);
-                        }
-
                         $result = $db->query($query);
 
                         if ($result->num_rows > 0) {
@@ -114,11 +182,32 @@
                                 echo "<td>" . $row['Nineras'] . "</td>";
                                 echo "<td>";
                                 if ($row['Estado'] !== 'Inhabilitado') {
-                                    $url_update = '/dashboard/gestion%20de%20ambientes/admin/updateAmbiente/';
+                                    $url_update = 'updateAmbiente/';
                                     echo "<a href='" . $url_update . $row['Id_ambiente'] . "' class='boton-modificar'><img src='../assets/editar.svg'></a>";
 
-                                    $url_update = '/dashboard/gestion%20de%20ambientes/admin/generateQR/';
-                                    echo "<a href='" . $url_update . $row['Id_ambiente'] . "' class='boton-generar-qr' boton-accion ><img src='../assets/qr-code.svg'></a>";
+                                    $url_update = 'generateQR/'; // Aquí puedes usar el enlace a tu controlador
+                                    echo "
+                                    <a href='#' class='boton-generar-qr' data-bs-toggle='modal' data-bs-target='#qrModal{$row['Id_ambiente']}'>
+                                        <img src='../assets/qr-code.svg' alt='Generar QR'>
+                                    </a>
+                                    
+                                    <!-- Modal QR para el ambiente -->
+                                    <div class='modal fade' id='qrModal{$row['Id_ambiente']}' tabindex='-1' aria-labelledby='qrModalLabel{$row['Id_ambiente']}' aria-hidden='true'>
+                                      <div class='modal-dialog modal-dialog-centered'>
+                                        <div class='modal-content text-center'>
+                                          <div class='modal-header' style='background-color: #4CAF50; color: white;'>
+                                            <h5 class='modal-title w-100 text-center' id='qrModalLabel{$row['Id_ambiente']}'>Código del ambiente - {$row['Nombre']}</h5>
+                                          </div>
+                                          <div class='modal-body'>
+                                            <img class='img-fluid' src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" . urlencode("{$row['Id_ambiente']}") . "' alt='QR del ambiente {$row['Nombre']}'>
+                                          </div>
+                                          <div class='modal-footer justify-content-center'>
+                                            <button type='button' class='btn btn-danger' data-bs-dismiss='modal'>Cerrar</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    ";
                                 } else {
                                     echo "<a href='#' onclick='confirmarHabilitar(" . $row['Id_ambiente'] . ")' class='boton-habilitar boton-accion'><img src='../assets/habilitar.svg'></a>";
                                 }
@@ -129,69 +218,80 @@
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='11' class='text-center'>No hay registros</td></tr>";
+                            echo "<tr><td colspan='10' class='text-center'>No hay registros</td></tr>";
                         }
 
                         $db->close();
                         ?>
                     </tbody>
                 </table>
+                <?php
+                // Si se accede a la página con ?id_qr=ID, genera el QR visualmente solo una vez
+                if (isset($_GET['id_qr'])) {
+                    $id_qr = intval($_GET['id_qr']);
+                
+                    $queryQr = $db->prepare("SELECT * FROM t_ambientes WHERE Id_ambiente = ?");
+                    $queryQr->bind_param("i", $id_qr);
+                    $queryQr->execute();
+                    $resultadoQr = $queryQr->get_result();
+                
+                    if ($resultadoQr->num_rows > 0) {
+                        $ambiente = $resultadoQr->fetch_assoc();
+                        $contenido_qr = "Nombre: {$ambiente['Nombre']}\nTorre: {$ambiente['Torre']}\nComputadores: {$ambiente['Computadores']}\nTVs: {$ambiente['Tvs']}\nSillas: {$ambiente['Sillas']}\nMesas: {$ambiente['Mesas']}\nTableros: {$ambiente['Tableros']}\nNineras: {$ambiente['Nineras']}\nInfraestructura: {$ambiente['CheckInfraestructura']}\nObservaciones: {$ambiente['Observaciones']}";
+                        $qrCodeAPIURL = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($contenido_qr);
+                        echo "<div style='text-align:center; margin-top: 20px;'><h4>Código QR del ambiente</h4><img src='{$qrCodeAPIURL}' alt='Código QR del ambiente'></div>";
+                    }
+                }
+                ?>
             </div>
 
             <div class="filtro-y-crear">
                 <div class="crear-ambiente">
                     <?php
-                    $url_create = '/dashboard/gestion%20de%20ambientes/admin/createAmbiente/';
+                    $url_create = 'createAmbiente/';
                     ?>
                     <ul>
                         <li><a href="<?php echo $url_create; ?>" id="btn-create">Crear Nuevo Ambiente</a></li>
                     </ul>
                 </div>
             </div>
-
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="text-center p-3 bg-dark text-white mt-4">
-
         <div class="regresar">
             <?php
                 $url_regresar = 'home';
             ?>
-            <a href="<?php echo $url_regresar; ?>"class="button boton-centrado" id="btn-regresar">Regresar</a>
+            <a href="<?php echo $url_regresar; ?>" class="button boton-centrado" id="btn-regresar">Regresar</a>
         </div>
-
-        <div class="salir">
-            <a href="/gestiondeambientes/login" id="btn_salir" class="button-admin">Salir</a>
-        </div>
-
         <p>© 2025 Gestión de Ambientes de Formación - Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Script datatable -->
+    <!-- Script cerrar sesión -->
     <script>
-        $(document).ready(function() {
-            var table = $('#tabla-ambientes').DataTable({
-                dom: 'Bfrtip',
-                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-                paging: true,
-                pageLength: 10
-            });
-            $('.toggle-vis').on('click', function(e) {
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".salir").addEventListener("click", function (e) {
                 e.preventDefault();
-                var columnIdx = $(this).attr('data-column');
-                var column = table.column(columnIdx);
-                column.visible(!column.visible());
-
-                // Esperar un poco y luego ajustar las columnas
-                setTimeout(function() {
-                    table.columns.adjust().draw();
-                }, 200);
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Se cerrará tu sesión.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, cerrar sesión"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "../controllers/cerrarSesion.php";
+                    }
+                });
             });
         });
     </script>
 
-    <!-- Script ihnabilitar ambientes -->
+    <!-- Script inhabilitar ambientes -->
     <script>
         function confirmarInhabilitar(id) {
             if (confirm("¿Estás seguro de que deseas inhabilitar este ambiente?")) {
@@ -206,8 +306,37 @@
     </script>
 
     <!-- Boostrap -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Script datatable -->
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#tabla-ambientes')) {
+                $('#tabla-ambientes').DataTable().destroy();
+            }
+            var table = $('#tabla-ambientes').DataTable({
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                paging: true,
+                pageLength: 10
+            });
+
+            $('.toggle-vis').on('click', function(e) {
+                e.preventDefault();
+                var columnIdx = $(this).attr('data-column');
+                var column = table.column(columnIdx);
+                column.visible(!column.visible());
+
+                setTimeout(function() {
+                    table.columns.adjust().draw();
+                }, 200);
+            });
+        });
+    </script>
 </body>
 </html>
-
+<?php
+// Limpieza final del buffer con verificación
+if (ob_get_level() > 0) {
+    ob_end_flush();
+}

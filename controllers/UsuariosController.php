@@ -16,20 +16,18 @@ class UsuariosController {
             $correo = $_POST["correo"];
             $rol = $_POST["rol"];
             
-            // Generar contraseña aleatoria de 4 dígitos
-            $clave = str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
-
+            // Usar la contraseña del formulario si existe, de lo contrario generar una nueva
+            $clave = !empty($_POST["clave"]) ? $_POST["clave"] : str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+    
             $usuariosModel = new UsuariosModel();
             $result = $usuariosModel->guardarUsuario($nombres, $apellidos, $clave, $correo, $rol);
-
+    
             if ($result) {
-                // Redirigir al usuario a la lista de usuarios
-                header("Location: ../usuarios");
-                exit();
+                echo json_encode(["success" => true, "message" => "Usuario creado exitosamente"]);
             } else {
-                header("Location: index.php?error=Error al crear el usuario");
-                exit();
+                echo json_encode(["success" => false, "error" => "Error al crear el usuario"]);
             }
+            exit();
         } else {
             include 'views/administrador/usuarios/create.php';
         }
@@ -40,18 +38,50 @@ class UsuariosController {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nombres = $_POST["nombres"];
             $apellidos = $_POST["apellidos"];
-            $clave = $_POST["clave"];
+            $clave = $_POST["clave"]; // Puede estar vacía
             $correo = $_POST["correo"];
             $rol = $_POST["rol"];
-
+    
             $usuariosModel = new UsuariosModel();
             $result = $usuariosModel->modificarUsuario($id, $nombres, $apellidos, $clave, $correo, $rol);
-
+    
             if ($result) {
-                header("Location: ../usuarios");
+                // Si la actualización fue exitosa
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'El usuario se ha actualizado correctamente.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: '#39a900'
+                        }).then(() => {
+                            window.location.href = '../usuarios';
+                        });
+                    });
+                </script>";
                 exit();
             } else {
-                header("Location: index.php?error=Error al actualizar el usuario&id=$id");
+                // Si hay un error en la actualización
+                echo "
+                <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css' rel='stylesheet'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al actualizar el usuario.',
+                            icon: 'error',
+                            confirmButtonText: 'Intentar de nuevo',
+                            confirmButtonColor: '#d33'
+                        }).then(() => {
+                            window.location.href = './$id';
+                        });
+                    });
+                </script>";
                 exit();
             }
         } else {
@@ -59,7 +89,7 @@ class UsuariosController {
             $usuario = $usuariosModel->obtenerUsuarioPorId($id);
             include 'views/administrador/usuarios/update.php';
         }
-    }
+    }    
 
     public function inhabilitarUsuario($id) {
         $usuariosModel = new UsuariosModel(); // Corregido a UsuariosModel

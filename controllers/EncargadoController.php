@@ -42,12 +42,10 @@ class EncargadoController {
             echo "No se encontró información relacionada para el código QR escaneado.";
         }
     }
+    
     public function reportes() {
         include 'views/encargado/viewReportes/index.php';
     }
     
-    }
-
-    
-
+}
 ?>
